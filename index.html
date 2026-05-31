@@ -120,7 +120,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="app.navigate('home')">
-                    <img src="logo.png.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
+                    <img src="logo.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
                     <div>
                         <h1 class="font-black text-xl leading-tight text-slate-900 dark:text-white tracking-tight">SPMB ONLINE</h1>
                         <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">SDN 24 Batangase</p>
@@ -1577,6 +1577,25 @@
                     const tgl = new Date(item.waktu);
                     const tglFormat = tgl.toLocaleDateString('id-ID', {day:'2-digit', month:'short'}) + ' ' + tgl.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
 
+                    // Hitung Umur per 1 Juli 2026
+                    let ageDisplay = '-';
+                    let ageColor = 'text-slate-500 bg-slate-50 border-slate-200';
+                    if (item.tanggal_lahir) {
+                        const dob = new Date(item.tanggal_lahir);
+                        const patokan = new Date(2026, 6, 1); // Bulan ke-6 adalah Juli (0-indexed)
+                        let years = patokan.getFullYear() - dob.getFullYear();
+                        let months = patokan.getMonth() - dob.getMonth();
+                        if (months < 0 || (months === 0 && patokan.getDate() < dob.getDate())) { years--; months += 12; }
+                        if (patokan.getDate() < dob.getDate()) { months--; if(months < 0) months = 11; }
+                        
+                        ageDisplay = `${years} thn ${months} bln`;
+                        
+                        // Kode Warna Usia
+                        if (years >= 7) ageColor = 'text-emerald-700 bg-emerald-50 border-emerald-200';
+                        else if (years === 6) ageColor = 'text-amber-700 bg-amber-50 border-amber-200';
+                        else ageColor = 'text-rose-700 bg-rose-50 border-rose-200'; 
+                    }
+
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-50 transition-colors";
                     tr.innerHTML = `
@@ -1586,7 +1605,12 @@
                         </td>
                         <td class="py-3 px-4 border-b border-slate-100">
                             <div class="font-black text-slate-800 uppercase text-xs">${item.nama}</div>
-                            <div class="text-[9px] text-slate-500 font-mono mt-0.5 font-medium">NIK: ${item.nik}</div>
+                            <div class="text-[9px] text-slate-500 font-mono mt-1 font-medium flex items-center gap-2">
+                                <span>NIK: ${item.nik}</span>
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold border shadow-sm ${ageColor}" title="Usia dihitung per 1 Juli 2026">
+                                    Usia: ${ageDisplay}
+                                </span>
+                            </div>
                         </td>
                         <td class="py-3 px-4 border-b border-slate-100">
                             <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] font-bold border border-slate-200">${item.jalur}</span>
@@ -1692,6 +1716,23 @@
                         <button onclick="app.confirmUpdateStatus('${item.id}', 'Lulus Seleksi')" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition shadow flex items-center justify-center gap-2"><i class="fa-solid fa-check text-sm"></i> Terima Berkas</button>
                     `;
                 }
+
+                // Hitung Umur per 1 Juli 2026 khusus untuk Detail View
+                let ageDetail = '-';
+                if (item.tanggal_lahir) {
+                    const dob = new Date(item.tanggal_lahir);
+                    const patokan = new Date(2026, 6, 1);
+                    let y = patokan.getFullYear() - dob.getFullYear();
+                    let m = patokan.getMonth() - dob.getMonth();
+                    if (m < 0 || (m === 0 && patokan.getDate() < dob.getDate())) { y--; m += 12; }
+                    if (patokan.getDate() < dob.getDate()) { m--; if(m < 0) m = 11; }
+                    
+                    let badgeInfo = y >= 7 ? '<span class="text-[9px] bg-emerald-100 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded ml-2 shadow-sm">Usia Memenuhi Syarat</span>' : 
+                                    (y === 6 ? '<span class="text-[9px] bg-amber-100 text-amber-700 border border-amber-200 px-1.5 py-0.5 rounded ml-2 shadow-sm">Batas Bawah (6 Thn)</span>' : 
+                                    '<span class="text-[9px] bg-rose-100 text-rose-700 border border-rose-200 px-1.5 py-0.5 rounded ml-2 shadow-sm">Kurang Umur</span>');
+                    
+                    ageDetail = `${y} Tahun ${m} Bulan ${badgeInfo}`;
+                }
                 
                 content.innerHTML = `
                     ${statusAlert}
@@ -1705,7 +1746,7 @@
                                     <div><p class="text-slate-400 text-[10px] font-bold uppercase">NIK</p><p class="font-mono text-xs font-bold text-slate-700">${item.nik}</p></div>
                                     <div><p class="text-slate-400 text-[10px] font-bold uppercase">NISN</p><p class="font-mono text-xs font-bold text-slate-700">${item.nisn || '-'}</p></div>
                                 </div>
-                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">TTL</p><p class="font-bold text-xs text-slate-700">${item.tempat_lahir || '-'}, ${item.tanggal_lahir || '-'}</p></div>
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">TTL & Usia (per 1 Juli 2026)</p><p class="font-bold text-xs text-slate-700">${item.tempat_lahir || '-'}, ${item.tanggal_lahir || '-'}</p><p class="font-bold text-xs text-primary-600 flex items-center mt-1">${ageDetail}</p></div>
                                 <div><p class="text-slate-400 text-[10px] font-bold uppercase">Alamat Domisili</p><p class="font-bold text-xs text-slate-700 leading-relaxed">${item.alamat || '-'}, RT/RW ${item.rtrw || '-'}, Kel. ${item.kelurahan}</p></div>
                                 <div><p class="text-slate-400 text-[10px] font-bold uppercase">Jalur Masuk</p><p class="font-black text-xs text-primary-600">${item.jalur}</p></div>
                             </div>
