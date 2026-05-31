@@ -857,7 +857,7 @@
                     </div>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400"><i class="fa-solid fa-lock text-sm"></i></div>
-                        <input type="password" id="login-password" class="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-600/50 text-white rounded-xl text-sm focus:ring-2 focus:ring-primary-500 outline-none transition placeholder-slate-400" placeholder="Password (110995)" required>
+                        <input type="password" id="login-password" class="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-600/50 text-white rounded-xl text-sm focus:ring-2 focus:ring-primary-500 outline-none transition placeholder-slate-400" placeholder="Password" required>
                     </div>
                     <button type="button" onclick="app.login()" class="w-full py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold text-sm transition shadow-lg flex justify-center items-center gap-2 mt-2">
                         Masuk Sistem <i class="fa-solid fa-arrow-right-to-bracket"></i>
@@ -1241,7 +1241,7 @@
                     uploadDiv.innerHTML = `
                         <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
                             <label class="block text-sm font-bold text-slate-800 mb-3">Kartu KIP/PKH/KKS <span class="text-red-500">*</span></label>
-                            <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer">
+                            <input type="file" id="file_jalur_khusus" required accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" onchange="app.validateFile(this)">
                         </div>`;
                 } else if (jalur === 'Mutasi') {
                     infoDiv.className = 'mt-6 p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-xs text-emerald-800 font-medium';
@@ -1249,7 +1249,7 @@
                     uploadDiv.innerHTML = `
                         <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
                             <label class="block text-sm font-bold text-slate-800 mb-3">Surat Pindah Tugas <span class="text-red-500">*</span></label>
-                            <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer">
+                            <input type="file" id="file_jalur_khusus" required accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" onchange="app.validateFile(this)">
                         </div>`;
                 } else {
                     infoDiv.className = 'mt-6 p-4 rounded-xl border border-blue-200 bg-blue-50 text-xs text-blue-800 font-medium';
@@ -1257,65 +1257,22 @@
                 }
             },
 
-            // --- ZONASI LOGIC ---
-            updateLingkungan() {
-                const kel = document.getElementById('kelurahan').value;
-                const lingSel = document.getElementById('lingkungan');
-                lingSel.innerHTML = '<option value="">Pilih Lingkungan...</option>';
-                
-                if(dataZonasi[kel]) {
-                    dataZonasi[kel].forEach(l => {
-                        lingSel.innerHTML += `<option value="${l}">${l}</option>`;
-                    });
-                } else if (kel === 'Lainnya') {
-                    lingSel.innerHTML = '<option value="Luar Wilayah">Luar Wilayah Prioritas</option>';
-                }
-                this.checkZonasi();
-            },
-
-            checkZonasi() {
-                const kel = document.getElementById('kelurahan').value;
-                const ling = document.getElementById('lingkungan').value;
-                const badgeContainer = document.getElementById('zonasi-badge-container');
-                const badge = document.getElementById('zonasi-badge');
-                const icon = document.getElementById('zonasi-icon');
-                const text = document.getElementById('zonasi-text');
-
-                if(!kel || !ling) {
-                    badgeContainer.classList.add('hidden');
+            // --- SUBMIT FORM ---
+            async submitForm() {
+                // Validasi Pernyataan
+                if(!document.getElementById('pernyataan').checked) {
+                    Swal.fire('Perhatian', 'Anda harus menyetujui pernyataan kebenaran data.', 'warning');
                     return;
                 }
 
-                badgeContainer.classList.remove('hidden');
-                
-                let isDalamZonasi = false;
-                if(dataZonasi[kel] && dataZonasi[kel].includes(ling)) {
-                    isDalamZonasi = true;
-                }
-
-                if(isDalamZonasi) {
-                    badge.className = "px-4 py-2.5 rounded-lg border text-xs font-bold flex items-center gap-2 bg-emerald-50 text-emerald-700 border-emerald-200";
-                    icon.className = "fa-solid fa-circle-check";
-                    text.innerText = "Dalam Wilayah Zonasi Sekolah";
-                } else {
-                    badge.className = "px-4 py-2.5 rounded-lg border text-xs font-bold flex items-center gap-2 bg-rose-50 text-rose-700 border-rose-200";
-                    icon.className = "fa-solid fa-triangle-exclamation";
-                    text.innerText = "Luar Wilayah Zonasi Prioritas";
-                }
-            },
-
-            validateFile(input) {
-                const file = input.files[0];
-                if(file && file.size > 2 * 1024 * 1024) {
-                    Swal.fire('File Terlalu Besar', 'Maksimal ukuran file adalah 2MB', 'error');
-                    input.value = '';
-                }
-            },
-
-            // --- SUBMIT FORM ---
-            async submitForm() {
-                if(!document.getElementById('pernyataan').checked) {
-                    Swal.fire('Perhatian', 'Anda harus menyetujui pernyataan kebenaran data.', 'warning');
+                // Validasi Wajib Upload (Jalur Khusus)
+                const fileJalur = document.getElementById('file_jalur_khusus');
+                if(fileJalur && !fileJalur.value) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Dokumen Belum Lengkap',
+                        text: 'Mohon unggah dokumen pendukung wajib untuk jalur pendaftaran yang Anda pilih.'
+                    });
                     return;
                 }
 
