@@ -123,7 +123,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="app.navigate('home')">
-                    <img src="logo.png.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
+                    <img src="logo.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
                     <div>
                         <h1 class="font-black text-xl leading-tight text-slate-900 dark:text-white tracking-tight">SPMB ONLINE</h1>
                         <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">SDN 24 Batangase</p>
@@ -1131,9 +1131,9 @@
         // 1. SUPABASE CONFIGURATION
         // ---------------------------------------------------------
         // GANTI DENGAN URL DAN ANON KEY SUPABASE ANDA!
-        const SUPABASE_URL = 'https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/';
+        const SUPABASE_URL = 'https://budjhyayxzaeffjpblbd.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1ZGpoeWF5eHphZWZmanBibGJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMjI0OTAsImV4cCI6MjA5NTc5ODQ5MH0.GEE5cuvrdVG-vDCjywYqmqZ6YNep4kwMNuxzNjwUPHg';
-        const supabaseClient = window.supabase.createClient(https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1ZGpoeWF5eHphZWZmanBibGJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMjI0OTAsImV4cCI6MjA5NTc5ODQ5MH0.GEE5cuvrdVG-vDCjywYqmqZ6YNep4kwMNuxzNjwUPHg);
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // ---------------------------------------------------------
         // 2. DATA REFERENSI & STATE
@@ -1373,7 +1373,7 @@
                     return;
                 }
 
-                if (!https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/ || https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/ === 'https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/') {
+                if (!SUPABASE_URL || SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE') {
                     Swal.fire('Konfigurasi Gagal', 'Silakan masukkan SUPABASE_URL dan SUPABASE_KEY pada kode JS terlebih dahulu.', 'error');
                     return;
                 }
@@ -1433,7 +1433,7 @@
             async cekStatus() {
                 const searchId = document.getElementById('search-id').value.toUpperCase();
                 
-                if (!https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/ || https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/ === 'https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/') {
+                if (!SUPABASE_URL || SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE') {
                     Swal.fire('Konfigurasi Gagal', 'Silakan masukkan SUPABASE_URL dan SUPABASE_KEY pada kode JS terlebih dahulu.', 'error');
                     return;
                 }
@@ -1521,7 +1521,7 @@
                 const email = document.getElementById('login-email').value;
                 const pass = document.getElementById('login-password').value;
                 
-                if (!https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/ || https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/ === 'https://budjhyayxzaeffjpblbd.supabase.co/rest/v1/') {
+                if (!SUPABASE_URL || SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE') {
                     Swal.fire('Konfigurasi Gagal', 'Silakan masukkan SUPABASE_URL dan SUPABASE_KEY pada kode JS terlebih dahulu.', 'error');
                     return;
                 }
