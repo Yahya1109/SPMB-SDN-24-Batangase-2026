@@ -26,9 +26,6 @@
     <!-- SweetAlert2 (Premium Toasts) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Supabase JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -673,13 +670,6 @@
                                 <input type="file" id="file_akta" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900/30 dark:file:text-primary-300" required onchange="app.validateFile(this)">
                             </div>
                             
-                            <!-- Berkas Opsional -->
-                            <div class="upload-box md:col-span-2">
-                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">3. Ijazah/SKL (Opsional)</label>
-                                <input type="file" id="file_ijazah" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900/30 dark:file:text-primary-300" onchange="app.validateFile(this)">
-                                <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-circle-info text-blue-500"></i> Surat Keterangan Lulus dari TK/PAUD (jika ada).</p>
-                            </div>
-
                             <!-- Berkas Dinamis (Injected by JS based on Jalur) -->
                             <div id="dynamic-uploads" class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6"></div>
                         </div>
@@ -937,14 +927,8 @@
         // ---------------------------------------------------------
         // 1. DATA REFERENSI & STATE
         // ---------------------------------------------------------
-        // Konfigurasi Supabase (GANTI DENGAN URL DAN KEY ANDA)
-        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        
-        // Inisialisasi Supabase Client
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        let localDataStore = []; // Untuk cache data di halaman admin
+        let isMockMode = true; 
+        let mockDataStore = []; 
 
         const dataZonasi = {
             "Bontoa": ["Tetebatu", "Bontoa", "Tamarampu"],
@@ -1143,11 +1127,6 @@
                     return;
                 }
 
-                if(SUPABASE_URL === 'YOUR_SUPABASE_URL') {
-                    Swal.fire('Gagal', 'Supabase URL & Key belum diatur di dalam kode.', 'error');
-                    return;
-                }
-
                 this.showLoading();
 
                 // Generate ID
@@ -1167,53 +1146,40 @@
                 };
 
                 try {
-                    // Simpan data ke tabel 'pendaftar' di Supabase
-                    const { data, error } = await supabase
-                        .from('pendaftar')
-                        .insert([formData]);
-
-                    this.hideLoading();
-
-                    if (error) throw error;
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Pendaftaran Berhasil!',
-                        html: `Nomor Pendaftaran Anda:<br><b class="text-2xl text-primary-600 mt-2 block">${noDaftar}</b><br>Simpan nomor ini untuk mengecek status.`,
-                        confirmButtonText: 'Selesai',
-                        confirmButtonColor: '#2563eb'
-                    }).then(() => {
-                        document.getElementById('form-pendaftaran').reset();
-                        this.navigate('home');
-                    });
+                    if(isMockMode) {
+                        // Mock Save
+                        setTimeout(() => {
+                            mockDataStore.push(formData);
+                            this.hideLoading();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Pendaftaran Berhasil!',
+                                html: `Nomor Pendaftaran Anda:<br><b class="text-2xl text-primary-600 mt-2 block">${noDaftar}</b><br>Simpan nomor ini untuk mengecek status.`,
+                                confirmButtonText: 'Selesai',
+                                confirmButtonColor: '#2563eb'
+                            }).then(() => {
+                                document.getElementById('form-pendaftaran').reset();
+                                this.navigate('home');
+                            });
+                        }, 1500);
+                    } else {
+                        // Logic untuk penyimpanan DB sesungguhnya bisa ada di sini.
+                    }
                 } catch(e) {
                     this.hideLoading();
-                    console.error("Supabase Insert Error: ", e);
-                    Swal.fire('Error', 'Terjadi kesalahan saat menyimpan data ke database.', 'error');
+                    Swal.fire('Error', 'Terjadi kesalahan sistem.', 'error');
                 }
             },
 
             // --- CEK STATUS ---
-            async cekStatus() {
+            cekStatus() {
                 const searchId = document.getElementById('search-id').value.toUpperCase();
-                
-                if(SUPABASE_URL === 'YOUR_SUPABASE_URL') {
-                    Swal.fire('Gagal', 'Supabase URL & Key belum diatur di dalam kode.', 'error');
-                    return;
-                }
-
                 this.showLoading();
 
-                try {
-                    // Mengambil satu data spesifik dari Supabase
-                    const { data: res, error } = await supabase
-                        .from('pendaftar')
-                        .select('*')
-                        .or(`id.eq.${searchId},nik.eq.${searchId}`)
-                        .single();
-
+                setTimeout(() => {
                     this.hideLoading();
                     const resultCard = document.getElementById('status-result');
+                    const res = mockDataStore.find(d => d.id === searchId || d.nik === searchId);
 
                     if(res) {
                         resultCard.classList.remove('hidden');
@@ -1259,11 +1225,7 @@
                         resultCard.classList.add('hidden');
                         Swal.fire('Tidak Ditemukan', 'Data dengan No. Pendaftaran/NIK tersebut tidak ditemukan.', 'error');
                     }
-                } catch (e) {
-                    this.hideLoading();
-                    document.getElementById('status-result').classList.add('hidden');
-                    Swal.fire('Tidak Ditemukan', 'Data dengan No. Pendaftaran/NIK tersebut tidak ditemukan.', 'error');
-                }
+                }, 1000);
             },
 
             // --- ADMIN LOGIC ---
@@ -1301,33 +1263,15 @@
                 });
             },
 
-            async loadAdminDashboard() {
-                this.showLoading();
-                try {
-                    // Ambil seluruh data pendaftar terbaru dari Supabase
-                    const { data, error } = await supabase
-                        .from('pendaftar')
-                        .select('*')
-                        .order('waktu', { ascending: false });
+            loadAdminDashboard() {
+                // Render Stats
+                document.getElementById('stat-total').innerText = mockDataStore.length;
+                document.getElementById('stat-menunggu').innerText = mockDataStore.filter(d => d.status === 'Menunggu Verifikasi').length;
+                document.getElementById('stat-lulus').innerText = mockDataStore.filter(d => d.status === 'Lulus Seleksi').length;
+                document.getElementById('stat-zonasi').innerText = mockDataStore.filter(d => d.jalur === 'Domisili').length;
 
-                    this.hideLoading();
-                    if(error) throw error;
-
-                    localDataStore = data || []; // Simpan ke local cache untuk tabel dan grafik
-
-                    // Render Stats
-                    document.getElementById('stat-total').innerText = localDataStore.length;
-                    document.getElementById('stat-menunggu').innerText = localDataStore.filter(d => d.status === 'Menunggu Verifikasi').length;
-                    document.getElementById('stat-lulus').innerText = localDataStore.filter(d => d.status === 'Lulus Seleksi').length;
-                    document.getElementById('stat-zonasi').innerText = localDataStore.filter(d => d.jalur === 'Domisili').length;
-
-                    this.renderChart();
-                    this.renderTable(localDataStore);
-                } catch (e) {
-                    this.hideLoading();
-                    console.error("Supabase Load Error: ", e);
-                    Swal.fire('Error', 'Gagal memuat data dari Supabase.', 'error');
-                }
+                this.renderChart();
+                this.renderTable(mockDataStore);
             },
 
             renderChart() {
@@ -1335,7 +1279,7 @@
                 if(this.chartInstance) this.chartInstance.destroy();
                 
                 const dataCount = { Domisili:0, Afirmasi:0, Mutasi:0 };
-                localDataStore.forEach(d => { if(dataCount[d.jalur] !== undefined) dataCount[d.jalur]++; });
+                mockDataStore.forEach(d => { if(dataCount[d.jalur] !== undefined) dataCount[d.jalur]++; });
 
                 this.chartInstance = new Chart(ctx, {
                     type: 'doughnut',
@@ -1387,7 +1331,7 @@
 
             filterTable() {
                 const query = document.getElementById('admin-search').value.toLowerCase();
-                const filtered = localDataStore.filter(d => 
+                const filtered = mockDataStore.filter(d => 
                     d.nama.toLowerCase().includes(query) || d.id.toLowerCase().includes(query)
                 );
                 this.renderTable(filtered);
@@ -1410,7 +1354,7 @@
             },
 
             viewDetail(id) {
-                const item = localDataStore.find(d => d.id === id);
+                const item = mockDataStore.find(d => d.id === id);
                 if(!item) return;
 
                 const content = document.getElementById('modal-content');
@@ -1474,13 +1418,6 @@
                                 <div class="overflow-hidden">
                                     <p class="font-bold text-sm text-slate-700 dark:text-slate-200 truncate">Akta Kelahiran</p>
                                     <p class="text-xs text-slate-400">Wajib Diperiksa</p>
-                                </div>
-                            </button>
-                            <button onclick="app.previewDocument('Ijazah/SKL TK', '${item.nama}')" class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card border border-slate-200 dark:border-slate-600 rounded-lg hover:border-primary-500 hover:shadow-md transition text-left group">
-                                <div class="w-10 h-10 rounded bg-purple-50 text-purple-500 flex items-center justify-center shrink-0 group-hover:bg-purple-500 group-hover:text-white transition"><i class="fa-solid fa-file-pdf text-xl"></i></div>
-                                <div class="overflow-hidden">
-                                    <p class="font-bold text-sm text-slate-700 dark:text-slate-200 truncate">Ijazah / SKL TK</p>
-                                    <p class="text-xs text-slate-400">Opsional</p>
                                 </div>
                             </button>
                             ${item.jalur !== 'Domisili' ? `
@@ -1565,26 +1502,18 @@
                 }
             },
 
-            async updateStatus(id, newStatus, alasan = '') {
-                this.showLoading();
-                try {
-                    const updateData = { status: newStatus };
+            updateStatus(id, newStatus, alasan = '') {
+                const idx = mockDataStore.findIndex(d => d.id === id);
+                if(idx > -1) {
+                    mockDataStore[idx].status = newStatus;
                     if(newStatus === 'Ditolak') {
-                        updateData.alasan = alasan;
+                        mockDataStore[idx].alasan = alasan;
                     } else {
-                        updateData.alasan = null;
+                        delete mockDataStore[idx].alasan; // Clear reason if accepted or reset
                     }
-
-                    // Update data di Supabase
-                    const { error } = await supabase
-                        .from('pendaftar')
-                        .update(updateData)
-                        .eq('id', id);
-
-                    if(error) throw error;
                     
                     this.closeModal();
-                    await this.loadAdminDashboard(); // Refresh data dari db setelah diupdate
+                    this.loadAdminDashboard();
                     
                     // Show beautiful toast
                     Swal.fire({
@@ -1596,16 +1525,12 @@
                         title: `Status berhasil diubah menjadi: ${newStatus}`,
                         timerProgressBar: true
                     });
-                } catch (e) {
-                    this.hideLoading();
-                    console.error("Supabase Update Error:", e);
-                    Swal.fire('Error', 'Gagal memperbarui status di database.', 'error');
                 }
             },
 
             // --- EXPORT & PRINT ---
             exportExcel() {
-                const ws = XLSX.utils.json_to_sheet(localDataStore);
+                const ws = XLSX.utils.json_to_sheet(mockDataStore);
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Pendaftar");
                 XLSX.writeFile(wb, "Data_SPMB_SDN24.xlsx");
@@ -1632,9 +1557,13 @@
                 doc.save("Bukti_Lulus_SPMB.pdf");
             },
 
-            // Seed Mock Data - Dinonaktifkan karena sekarang menggunakan Supabase
+            // Seed Mock Data for Preview
             seedMockData() {
-                // Tidak melakukan insert otomatis lagi
+                mockDataStore = [
+                    { id: 'SPMB-2026-001', nik: '7309012345678901', nama: 'AHMAD FAUZAN', jalur: 'Domisili', kelurahan: 'Bontoa', status: 'Lulus Seleksi', waktu: '2026-06-01T08:00:00Z' },
+                    { id: 'SPMB-2026-002', nik: '7309012345678902', nama: 'SITI AMINAH', jalur: 'Afirmasi', kelurahan: 'Hasanuddin', status: 'Menunggu Verifikasi', waktu: '2026-06-02T09:30:00Z' },
+                    { id: 'SPMB-2026-003', nik: '7309012345678903', nama: 'BUDI SANTOSO', jalur: 'Mutasi', kelurahan: 'Lainnya', status: 'Ditolak', alasan: 'Surat tugas orang tua tidak dilampirkan atau kedaluwarsa.', waktu: '2026-06-03T10:15:00Z' },
+                ];
             }
         };
 
