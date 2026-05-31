@@ -120,9 +120,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="app.navigate('home')">
-                    <div class="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg mr-3">
-                        <i class="fa-solid fa-school text-lg"></i>
-                    </div>
+                    <img src="logo.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
                     <div>
                         <h1 class="font-black text-xl leading-tight text-slate-900 dark:text-white tracking-tight">SPMB ONLINE</h1>
                         <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">SDN 24 Batangase</p>
@@ -172,13 +170,15 @@
             
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-24 relative z-10 text-center lg:text-left flex flex-col lg:flex-row items-center gap-12">
                 <div class="lg:w-1/2 animate-slide-up">
-                    <span class="inline-flex items-center gap-1.5 py-1.5 px-4 rounded-full bg-primary-50 text-primary-700 text-xs font-bold tracking-wide uppercase mb-6 border border-primary-100">
-                        <span class="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse"></span> Tahun Ajaran 2026/2027
-                    </span>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight mb-6">
-                        Penerimaan <br> Siswa Baru <br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-blue-400">SDN 24 Batangase</span>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight mb-4">
+                        Sistem Penerimaan <br> Murid Baru <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-blue-400">UPTD SDN 24 Batangase</span>
                     </h1>
+                    <div class="mb-6">
+                        <span class="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-primary-50/50 text-primary-700 text-sm font-bold tracking-wide uppercase border border-primary-100 shadow-sm backdrop-blur-sm">
+                            <i class="fa-solid fa-graduation-cap text-primary-500"></i> Tahun Ajaran 2026/2027
+                        </span>
+                    </div>
                     <p class="text-base text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
                         Selamat datang di portal Sistem Pendaftaran Murid Baru (SPMB). Pendaftaran kini lebih mudah, transparan, dan dapat diakses secara daring tanpa biaya.
                     </p>
@@ -235,6 +235,243 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Syarat Pendaftaran -->
+        <div class="py-16 bg-slate-50 border-t border-slate-200 relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-black text-slate-900 mb-4">Persyaratan Pendaftaran</h2>
+                    <p class="text-slate-600 text-sm max-w-2xl mx-auto leading-relaxed">
+                        Pastikan calon peserta didik memenuhi syarat dan telah menyiapkan berkas-berkas fisik (maupun digital untuk diunggah) berikut sebelum melakukan pendaftaran.
+                    </p>
+                </div>
+                
+                <div class="max-w-3xl mx-auto bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500 text-lg shrink-0 mt-0.5"></i>
+                            <span class="text-slate-700 font-medium text-sm leading-relaxed">
+                                Usia <strong>7 (Tujuh)</strong> dan minimal <strong>6 (Enam) tahun</strong> pada tanggal 1 Juli tahun berjalan.
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500 text-lg shrink-0 mt-0.5"></i>
+                            <span class="text-slate-700 font-medium text-sm leading-relaxed">
+                                Fotocopy <strong>Ijazah/SKL</strong> (Surat Keterangan Lulus dari TK).
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500 text-lg shrink-0 mt-0.5"></i>
+                            <span class="text-slate-700 font-medium text-sm leading-relaxed">
+                                Fotocopy <strong>Akte Kelahiran / KIA</strong>.
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500 text-lg shrink-0 mt-0.5"></i>
+                            <span class="text-slate-700 font-medium text-sm leading-relaxed">
+                                Fotocopy <strong>Kartu Keluarga (KK)</strong>.
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500 text-lg shrink-0 mt-0.5"></i>
+                            <span class="text-slate-700 font-medium text-sm leading-relaxed">
+                                Fotocopy bukti keikutsertaan program penanganan keluarga tidak mampu, seperti <strong>Kartu Keluarga Sejahtera, PKH, dan Kartu Badan Penyelenggara Bantuan Sosial</strong> <em class="text-slate-400 font-normal">(jika ada)</em>.
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jadwal Penting (Linimasa) -->
+        <div class="py-20 bg-white relative overflow-hidden">
+            <!-- Background Decorations -->
+            <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+            <div class="absolute -left-20 top-20 w-64 h-64 rounded-full bg-pink-50 blur-3xl opacity-60 pointer-events-none"></div>
+            <div class="absolute -right-20 bottom-20 w-64 h-64 rounded-full bg-blue-50 blur-3xl opacity-60 pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16">
+                    <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-amber-50 text-amber-700 text-[10px] font-black tracking-widest uppercase mb-4 border border-amber-200">
+                        <i class="fa-regular fa-calendar-days"></i> Linimasa
+                    </span>
+                    <h2 class="text-3xl font-black text-slate-900 mb-4">Jadwal Penting SPMB 2026</h2>
+                    <p class="text-slate-600 text-sm max-w-2xl mx-auto">
+                        Catat tanggal-tanggal penting di bawah ini agar Anda tidak tertinggal tahapan pendaftaran peserta didik baru.
+                    </p>
+                </div>
+
+                <!-- Ilustrasi Anak Kiri (Memegang Buku) -->
+                <div class="hidden lg:block absolute left-0 bottom-0 w-48 h-56 pointer-events-none transform -translate-x-4 translate-y-8">
+                    <!-- SVG Character Boy holding book -->
+                    <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-xl animate-pulse-slow">
+                        <!-- Body -->
+                        <path d="M100 240V120C100 120 70 120 70 150C70 180 100 240 100 240Z" fill="#3b82f6"/>
+                        <path d="M100 240V120C100 120 130 120 130 150C130 180 100 240 100 240Z" fill="#2563eb"/>
+                        <!-- Head -->
+                        <circle cx="100" cy="80" r="35" fill="#fcd34d"/>
+                        <!-- Hair -->
+                        <path d="M65 80C65 50 85 40 100 40C115 40 135 50 135 80C135 60 115 50 100 50C85 50 65 60 65 80Z" fill="#1e293b"/>
+                        <circle cx="100" cy="45" r="15" fill="#1e293b"/>
+                        <!-- Face Details -->
+                        <circle cx="85" cy="80" r="4" fill="#1e293b"/>
+                        <circle cx="115" cy="80" r="4" fill="#1e293b"/>
+                        <path d="M90 95Q100 105 110 95" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Book -->
+                        <rect x="110" y="130" width="40" height="50" rx="4" fill="#ef4444" transform="rotate(15 110 130)"/>
+                        <rect x="115" y="135" width="30" height="40" rx="2" fill="#fee2e2" transform="rotate(15 110 130)"/>
+                        <!-- Arm -->
+                        <path d="M125 130Q140 150 120 160" stroke="#fcd34d" stroke-width="12" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <!-- Ilustrasi Anak Kanan (Menunjuk Timeline) -->
+                <div class="hidden lg:block absolute right-0 bottom-0 w-48 h-56 pointer-events-none transform translate-x-4 translate-y-8">
+                    <!-- SVG Character Girl pointing -->
+                    <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-xl animate-pulse-slow" style="animation-delay: 1s;">
+                        <!-- Dress -->
+                        <path d="M100 110L60 220H140L100 110Z" fill="#ec4899"/>
+                        <path d="M100 110L100 220H140L100 110Z" fill="#be185d"/>
+                        <!-- Head -->
+                        <circle cx="100" cy="80" r="30" fill="#fcd34d"/>
+                        <!-- Hair (Pigtails) -->
+                        <circle cx="65" cy="70" r="18" fill="#451a03"/>
+                        <circle cx="135" cy="70" r="18" fill="#451a03"/>
+                        <path d="M70 80C70 45 90 45 100 45C110 45 130 45 130 80" stroke="#451a03" stroke-width="15" stroke-linecap="round"/>
+                        <!-- Face Details -->
+                        <circle cx="90" cy="85" r="3" fill="#1e293b"/>
+                        <circle cx="110" cy="85" r="3" fill="#1e293b"/>
+                        <path d="M95 95Q100 100 105 95" stroke="#1e293b" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Arm Pointing Left/Up -->
+                        <path d="M85 125L45 100" stroke="#fcd34d" stroke-width="10" stroke-linecap="round"/>
+                        <!-- Arm resting -->
+                        <path d="M115 125L130 160" stroke="#fcd34d" stroke-width="10" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <!-- Timeline Container (Horizontal Scroll on Mobile) -->
+                <div class="relative overflow-x-auto pb-10 pt-5 px-4 hide-scrollbar">
+                    <div class="min-w-[800px] lg:min-w-full relative">
+                        
+                        <!-- The Connecting Line -->
+                        <div class="absolute top-[45px] left-[5%] right-[5%] h-1.5 bg-slate-100 rounded-full z-0"></div>
+                        <!-- Progress Line (Simulated) -->
+                        <div class="absolute top-[45px] left-[5%] w-0 h-1.5 bg-gradient-to-r from-pink-500 via-emerald-400 to-blue-500 rounded-full z-0 transition-all duration-1000" style="width: 15%;" id="timeline-progress"></div>
+
+                        <!-- Timeline Nodes Grid -->
+                        <div class="grid grid-cols-6 gap-4 relative z-10">
+                            
+                            <!-- Node 1: Afirmasi -->
+                            <div class="flex flex-col items-center group">
+                                <div class="w-24 h-24 rounded-2xl bg-white border-2 border-pink-100 shadow-md flex flex-col items-center justify-center mb-4 transition-transform group-hover:-translate-y-2 group-hover:border-pink-300 relative">
+                                    <div class="w-10 h-10 rounded-full bg-pink-50 text-pink-500 flex items-center justify-center text-lg mb-1">
+                                        <i class="fa-solid fa-clipboard-list"></i>
+                                    </div>
+                                    <span class="text-[10px] font-black text-pink-600 uppercase tracking-wider">Afirmasi</span>
+                                    <!-- Connection Dot -->
+                                    <div class="absolute -bottom-6 w-4 h-4 rounded-full bg-white border-4 border-pink-500 z-10 shadow"></div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <h4 class="font-black text-slate-800 text-sm">8-9 Juni</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Pendaftaran Online</p>
+                                </div>
+                            </div>
+
+                            <!-- Node 2: Mutasi -->
+                            <div class="flex flex-col items-center group">
+                                <div class="w-24 h-24 rounded-2xl bg-white border-2 border-emerald-100 shadow-md flex flex-col items-center justify-center mb-4 transition-transform group-hover:-translate-y-2 group-hover:border-emerald-300 relative">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-lg mb-1">
+                                        <i class="fa-solid fa-truck-fast"></i>
+                                    </div>
+                                    <span class="text-[10px] font-black text-emerald-600 uppercase tracking-wider">Mutasi</span>
+                                    <div class="absolute -bottom-6 w-4 h-4 rounded-full bg-white border-4 border-emerald-500 z-10 shadow"></div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <h4 class="font-black text-slate-800 text-sm">17-18 Juni</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Pendaftaran Online</p>
+                                </div>
+                            </div>
+
+                            <!-- Node 3: Zonasi -->
+                            <div class="flex flex-col items-center group">
+                                <div class="w-24 h-24 rounded-2xl bg-white border-2 border-blue-200 shadow-xl shadow-blue-500/10 flex flex-col items-center justify-center mb-4 transition-transform group-hover:-translate-y-2 group-hover:border-blue-400 relative scale-110 z-20">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg mb-1">
+                                        <i class="fa-solid fa-map-location-dot"></i>
+                                    </div>
+                                    <span class="text-[10px] font-black text-blue-700 uppercase tracking-wider">Domisili</span>
+                                    <div class="absolute -bottom-[26px] w-5 h-5 rounded-full bg-white border-4 border-blue-600 z-10 shadow animate-bounce"></div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <h4 class="font-black text-blue-700 text-sm">22-24 Juni</h4>
+                                    <p class="text-[10px] text-blue-600 font-bold mt-0.5 bg-blue-50 px-2 py-0.5 rounded-full inline-block">Zalur Utama</p>
+                                </div>
+                            </div>
+
+                            <!-- Node 4: Pengumuman -->
+                            <div class="flex flex-col items-center group">
+                                <div class="w-24 h-24 rounded-2xl bg-white border-2 border-amber-100 shadow-md flex flex-col items-center justify-center mb-4 transition-transform group-hover:-translate-y-2 group-hover:border-amber-300 relative">
+                                    <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-lg mb-1">
+                                        <i class="fa-solid fa-bullhorn"></i>
+                                    </div>
+                                    <span class="text-[9px] font-black text-amber-600 uppercase tracking-wider text-center leading-tight px-1">Hasil Seleksi</span>
+                                    <div class="absolute -bottom-6 w-4 h-4 rounded-full bg-white border-4 border-amber-500 z-10 shadow"></div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <h4 class="font-black text-slate-800 text-sm">20 & 27 Juni</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Online & Offline</p>
+                                </div>
+                            </div>
+
+                            <!-- Node 5: Daftar Ulang -->
+                            <div class="flex flex-col items-center group">
+                                <div class="w-24 h-24 rounded-2xl bg-white border-2 border-indigo-100 shadow-md flex flex-col items-center justify-center mb-4 transition-transform group-hover:-translate-y-2 group-hover:border-indigo-300 relative">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center text-lg mb-1">
+                                        <i class="fa-regular fa-id-card"></i>
+                                    </div>
+                                    <span class="text-[10px] font-black text-indigo-600 uppercase tracking-wider">Daftar Ulang</span>
+                                    <div class="absolute -bottom-6 w-4 h-4 rounded-full bg-white border-4 border-indigo-500 z-10 shadow"></div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <h4 class="font-black text-slate-800 text-sm">1-3 Juli</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Di Sekolah</p>
+                                </div>
+                            </div>
+
+                            <!-- Node 6: Hari Pertama -->
+                            <div class="flex flex-col items-center group">
+                                <div class="w-24 h-24 rounded-2xl bg-white border-2 border-violet-100 shadow-md flex flex-col items-center justify-center mb-4 transition-transform group-hover:-translate-y-2 group-hover:border-violet-300 relative">
+                                    <div class="w-10 h-10 rounded-full bg-violet-50 text-violet-500 flex items-center justify-center text-lg mb-1">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </div>
+                                    <span class="text-[9px] font-black text-violet-600 uppercase tracking-wider text-center leading-tight px-1">Masuk Sekolah</span>
+                                    <div class="absolute -bottom-6 w-4 h-4 rounded-full bg-white border-4 border-violet-500 z-10 shadow"></div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <h4 class="font-black text-slate-800 text-sm">6 Juli 2026</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-0.5">Tahun Ajaran Baru</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                /* Hide scrollbar for the horizontal timeline container */
+                .hide-scrollbar::-webkit-scrollbar { display: none; }
+                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+            </style>
+            <script>
+                // Simple animation for the progress line on load
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        const progress = document.getElementById('timeline-progress');
+                        if(progress) progress.style.width = '100%';
+                    }, 500);
+                });
+            </script>
         </div>
 
         <!-- Footer -->
@@ -648,9 +885,7 @@
                 
                 <!-- Brand -->
                 <div class="h-16 flex items-center px-6 border-b border-slate-100 shrink-0">
-                    <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md mr-3">
-                        <i class="fa-solid fa-school text-sm"></i>
-                    </div>
+                    <img src="logo.png" alt="Logo" class="w-8 h-8 object-contain mr-3 drop-shadow" onerror="this.src='https://placehold.co/100x100/2563eb/ffffff?text=SD'; this.classList.add('rounded-lg');">
                     <div>
                         <h2 class="font-black text-slate-800 text-sm tracking-wide">SPMB Workspace</h2>
                         <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">SDN 24 BATANGASE</p>
