@@ -120,7 +120,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="app.navigate('home')">
-                    <img src="logo.png.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
+                    <img src="logo.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
                     <div>
                         <h1 class="font-black text-xl leading-tight text-slate-900 dark:text-white tracking-tight">SPMB ONLINE</h1>
                         <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">SDN 24 Batangase</p>
@@ -721,10 +721,14 @@
 
                             <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
                                 <h4 class="font-bold text-slate-800 text-sm mb-4"><i class="fa-solid fa-person-dress text-slate-400 mr-2"></i>Data Ibu</h4>
-                                <div class="grid grid-cols-1 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="space-y-1.5">
                                         <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Nama Lengkap <span class="text-red-500">*</span></label>
                                         <input type="text" id="nama_ibu" class="w-full px-4 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-primary-500 outline-none uppercase" required>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">No. HP / WhatsApp <span class="text-red-500">*</span></label>
+                                        <input type="tel" id="hp_ibu" pattern="[0-9]{10,14}" class="w-full px-4 py-2 rounded-lg border border-slate-200 text-sm font-mono focus:ring-2 focus:ring-primary-500 outline-none" required placeholder="08...">
                                     </div>
                                 </div>
                             </div>
@@ -747,17 +751,17 @@
                             <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
                                 <label class="block text-sm font-bold text-slate-800 mb-1">Kartu Keluarga (KK) <span class="text-red-500">*</span></label>
                                 <p class="text-[10px] text-slate-500 mb-3">Dokumen wajib untuk validasi domisili dan NIK.</p>
-                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" required onchange="app.validateFile(this)">
+                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" required onchange="app.validateFile(this, 'kk')">
                             </div>
                             <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
                                 <label class="block text-sm font-bold text-slate-800 mb-1">Akta Kelahiran <span class="text-red-500">*</span></label>
                                 <p class="text-[10px] text-slate-500 mb-3">Dokumen wajib untuk validasi usia calon peserta didik.</p>
-                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" required onchange="app.validateFile(this)">
+                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" required onchange="app.validateFile(this, 'akta')">
                             </div>
                             <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 md:col-span-2">
                                 <label class="block text-sm font-bold text-slate-800 mb-1">Ijazah/SKL dari TK <span class="text-slate-400 font-normal text-xs ml-1">(Opsional)</span></label>
                                 <p class="text-[10px] text-slate-500 mb-3">Surat Keterangan Lulus. Boleh dikosongkan jika belum ada/tidak TK.</p>
-                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer" onchange="app.validateFile(this)">
+                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer" onchange="app.validateFile(this, 'ijazah')">
                             </div>
                             <!-- Dynamic uploads container -->
                             <div id="dynamic-uploads" class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5"></div>
@@ -1137,6 +1141,7 @@
         window.app = {
             currentView: 'home',
             chartInstance: null,
+            uploadedFiles: {}, // Menyimpan data file base64 ke memori sementara
 
             init() {
                 this.setupTheme();
@@ -1239,17 +1244,17 @@
                     infoDiv.className = 'mt-6 p-4 rounded-xl border border-pink-200 bg-pink-50 text-xs text-pink-800 font-medium';
                     infoDiv.innerHTML = '<i class="fa-solid fa-circle-info"></i> Wajib melampirkan bukti kepesertaan KIP/PKH/DTKS atau surat keterangan disabilitas.';
                     uploadDiv.innerHTML = `
-                        <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                        <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 transition-colors">
                             <label class="block text-sm font-bold text-slate-800 mb-3">Kartu KIP/PKH/KKS <span class="text-red-500">*</span></label>
-                            <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer">
+                            <input type="file" required accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" onchange="app.validateFile(this, 'pendukung')">
                         </div>`;
                 } else if (jalur === 'Mutasi') {
                     infoDiv.className = 'mt-6 p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-xs text-emerald-800 font-medium';
                     infoDiv.innerHTML = '<i class="fa-solid fa-circle-info"></i> Wajib melampirkan Surat Penugasan Orang Tua dari instansi/perusahaan terkait.';
                     uploadDiv.innerHTML = `
-                        <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                        <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 transition-colors">
                             <label class="block text-sm font-bold text-slate-800 mb-3">Surat Pindah Tugas <span class="text-red-500">*</span></label>
-                            <input type="file" required class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer">
+                            <input type="file" required accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" onchange="app.validateFile(this, 'pendukung')">
                         </div>`;
                 } else {
                     infoDiv.className = 'mt-6 p-4 rounded-xl border border-blue-200 bg-blue-50 text-xs text-blue-800 font-medium';
@@ -1304,18 +1309,59 @@
                 }
             },
 
-            validateFile(input) {
+            validateFile(input, docKey) {
                 const file = input.files[0];
                 if(file && file.size > 2 * 1024 * 1024) {
                     Swal.fire('File Terlalu Besar', 'Maksimal ukuran file adalah 2MB', 'error');
                     input.value = '';
+                    input.parentElement.classList.remove('border-slate-200');
+                    input.parentElement.classList.add('border-red-500', 'bg-red-50');
+                    delete this.uploadedFiles[docKey];
+                } else if (file) {
+                    input.parentElement.classList.add('border-slate-200');
+                    input.parentElement.classList.remove('border-red-500', 'bg-red-50');
+                    
+                    // Gunakan FileReader API untuk mengubah file asli menjadi Base64
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.uploadedFiles[docKey] = {
+                            data: e.target.result,
+                            type: file.type,
+                            name: file.name
+                        };
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    delete this.uploadedFiles[docKey];
                 }
             },
 
             // --- SUBMIT FORM ---
             async submitForm() {
-                if(!document.getElementById('pernyataan').checked) {
-                    Swal.fire('Perhatian', 'Anda harus menyetujui pernyataan kebenaran data.', 'warning');
+                // Validate Step 4 Inputs (Files & Checkbox)
+                const currentDiv = document.getElementById('step-4');
+                const inputs = currentDiv.querySelectorAll('input[required]');
+                let valid = true;
+
+                inputs.forEach(input => {
+                    if (input.type === 'checkbox') {
+                        if (!input.checked) {
+                            valid = false;
+                        }
+                    } else if (input.type === 'file') {
+                        if (!input.value) {
+                            valid = false;
+                            input.parentElement.classList.remove('border-slate-200');
+                            input.parentElement.classList.add('border-red-500', 'bg-red-50');
+                        } else {
+                            input.parentElement.classList.add('border-slate-200');
+                            input.parentElement.classList.remove('border-red-500', 'bg-red-50');
+                        }
+                    }
+                });
+
+                if (!valid) {
+                    Swal.fire('Perhatian', 'Mohon unggah semua dokumen yang diwajibkan (*) dan setujui pernyataan.', 'warning');
                     return;
                 }
 
@@ -1339,14 +1385,17 @@
                     nama_ayah: document.getElementById('nama_ayah').value,
                     nama_ibu: document.getElementById('nama_ibu').value,
                     hp_ortu: document.getElementById('hp_ortu').value,
+                    hp_ibu: document.getElementById('hp_ibu').value,
                     jalur: document.querySelector('input[name="jalur"]:checked')?.value || 'Domisili',
                     status: 'Menunggu Verifikasi',
                     waktu: new Date().toISOString(),
+                    dokumen: Object.assign({}, this.uploadedFiles) // Simpan salinan file Base64 ke record
                 };
 
                 setTimeout(() => {
                     mockDataStore.push(formData);
                     this.hideLoading();
+                    this.uploadedFiles = {}; // Bersihkan cache file di memori
                     Swal.fire({
                         icon: 'success',
                         title: 'Pendaftaran Berhasil!',
@@ -1566,16 +1615,43 @@
                 this.renderTable(filtered);
             },
 
-            previewDocument(type, nama) {
+            previewDocument(type, id, docKey) {
+                const item = mockDataStore.find(d => d.id === id);
+                
+                // Cek apakah pendaftar telah berhasil upload & dokumen tersedia di Store
+                if (!item || !item.dokumen || !item.dokumen[docKey]) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Dokumen Kosong',
+                        text: `Siswa ini tidak mengunggah ${type}.`
+                    });
+                    return;
+                }
+
+                const doc = item.dokumen[docKey];
+                let htmlContent = '';
+
+                // Memisahkan pratinjau antara PDF dan Gambar secara Cerdas
+                if (doc.type.includes('pdf')) {
+                    htmlContent = `<iframe src="${doc.data}" class="w-full h-[60vh] rounded-lg border border-slate-200" frameborder="0"></iframe>`;
+                } else if (doc.type.includes('image')) {
+                    htmlContent = `<img src="${doc.data}" class="max-w-full max-h-[60vh] mx-auto object-contain rounded-lg border border-slate-200 shadow-sm">`;
+                } else {
+                    htmlContent = `<p class="text-slate-500 py-10">Format file tidak didukung untuk pratinjau.</p>`;
+                }
+
                 Swal.fire({
-                    title: `Dokumen ${type}`,
-                    text: `Pratinjau dokumen ${type} milik ${nama}`,
-                    imageUrl: `https://placehold.co/600x400/e2e8f0/475569?text=MOCKUP+DOKUMEN+${type.replace(/ /g, '+')}`,
-                    imageWidth: 600,
-                    imageHeight: 400,
-                    imageAlt: `Dokumen ${type}`,
-                    confirmButtonText: 'Tutup Pratinjau',
-                    confirmButtonColor: '#3b82f6'
+                    title: `Pratinjau ${type}`,
+                    html: htmlContent,
+                    width: '800px', // Memperlebar pop-up pembaca dokumen
+                    showCloseButton: true,
+                    focusConfirm: false,
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#3b82f6',
+                    customClass: {
+                        popup: 'rounded-2xl',
+                        title: 'text-lg font-black text-slate-800'
+                    }
                 });
             },
 
@@ -1638,7 +1714,10 @@
                             <div class="space-y-3">
                                 <div><p class="text-slate-400 text-[10px] font-bold uppercase">Nama Ayah</p><p class="font-black text-sm text-slate-800 uppercase">${item.nama_ayah || '-'}</p></div>
                                 <div><p class="text-slate-400 text-[10px] font-bold uppercase">Nama Ibu</p><p class="font-black text-sm text-slate-800 uppercase">${item.nama_ibu || '-'}</p></div>
-                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">Kontak/WA</p><p class="font-mono text-xs font-bold text-blue-600">${item.hp_ortu || '-'}</p></div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div><p class="text-slate-400 text-[10px] font-bold uppercase">Kontak Ayah</p><p class="font-mono text-xs font-bold text-blue-600">${item.hp_ortu || '-'}</p></div>
+                                    <div><p class="text-slate-400 text-[10px] font-bold uppercase">Kontak Ibu</p><p class="font-mono text-xs font-bold text-blue-600">${item.hp_ibu || '-'}</p></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1652,22 +1731,31 @@
                         </div>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-                            <button onclick="app.previewDocument('Kartu Keluarga (KK)', '${item.nama}')" class="w-full flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-lg hover:border-primary-400 hover:bg-primary-50 transition text-left group">
+                            <button onclick="app.previewDocument('Kartu Keluarga (KK)', '${item.id}', 'kk')" class="w-full flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-lg hover:border-primary-400 hover:bg-primary-50 transition text-left group">
                                 <div class="w-10 h-10 rounded bg-white border border-slate-200 text-slate-400 flex items-center justify-center shrink-0 group-hover:text-primary-600"><i class="fa-solid fa-file-pdf text-lg"></i></div>
                                 <div>
                                     <p class="font-bold text-xs text-slate-800">Scan KK</p>
                                     <p class="text-[9px] text-slate-500 font-bold uppercase mt-0.5">Wajib Diperiksa</p>
                                 </div>
                             </button>
-                            <button onclick="app.previewDocument('Akta Kelahiran', '${item.nama}')" class="w-full flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-lg hover:border-primary-400 hover:bg-primary-50 transition text-left group">
+                            <button onclick="app.previewDocument('Akta Kelahiran', '${item.id}', 'akta')" class="w-full flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-lg hover:border-primary-400 hover:bg-primary-50 transition text-left group">
                                 <div class="w-10 h-10 rounded bg-white border border-slate-200 text-slate-400 flex items-center justify-center shrink-0 group-hover:text-primary-600"><i class="fa-solid fa-file-pdf text-lg"></i></div>
                                 <div>
                                     <p class="font-bold text-xs text-slate-800">Akta Kelahiran</p>
                                     <p class="text-[9px] text-slate-500 font-bold uppercase mt-0.5">Wajib Diperiksa</p>
                                 </div>
                             </button>
+                            ${item.dokumen && item.dokumen.ijazah ? `
+                            <button onclick="app.previewDocument('Ijazah/SKL', '${item.id}', 'ijazah')" class="w-full sm:col-span-2 flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-lg hover:border-primary-400 hover:bg-primary-50 transition text-left group">
+                                <div class="w-10 h-10 rounded bg-white border border-slate-200 text-slate-400 flex items-center justify-center shrink-0 group-hover:text-primary-600"><i class="fa-solid fa-file-pdf text-lg"></i></div>
+                                <div>
+                                    <p class="font-bold text-xs text-slate-800">Ijazah/SKL TK</p>
+                                    <p class="text-[9px] text-slate-500 font-bold uppercase mt-0.5">Dokumen Pelengkap</p>
+                                </div>
+                            </button>
+                            ` : ''}
                             ${item.jalur !== 'Domisili' ? `
-                            <button onclick="app.previewDocument('Dokumen ${item.jalur}', '${item.nama}')" class="w-full sm:col-span-2 flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg hover:border-amber-400 hover:bg-amber-100 transition text-left group">
+                            <button onclick="app.previewDocument('Dokumen ${item.jalur}', '${item.id}', 'pendukung')" class="w-full sm:col-span-2 flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg hover:border-amber-400 hover:bg-amber-100 transition text-left group">
                                 <div class="w-10 h-10 rounded bg-white border border-amber-200 text-amber-500 flex items-center justify-center shrink-0 group-hover:text-amber-600"><i class="fa-solid fa-file-circle-check text-lg"></i></div>
                                 <div>
                                     <p class="font-bold text-xs text-amber-900">Surat Pendukung (${item.jalur})</p>
