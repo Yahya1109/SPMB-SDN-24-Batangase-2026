@@ -114,6 +114,32 @@
         /* Loading Overlay */
         #loading-overlay { display: none; }
         #loading-overlay.active { display: flex; }
+
+        /* Admin Layout Utilities */
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .admin-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: #0f172a; /* Dark blue/slate */
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .admin-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* Important for flex children to not overflow */
+        }
+        
+        /* Sidebar active link styling */
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.2); /* primary-500 with opacity */
+            color: #60a5fa; /* primary-400 */
+            border-left: 4px solid #3b82f6; /* primary-500 */
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-dark-bg text-slate-800 dark:text-slate-200 transition-colors duration-300">
@@ -769,7 +795,7 @@
                     </div>
                     <h2 class="text-2xl font-bold text-white mb-1">Admin Portal</h2>
                     <p class="text-slate-300 text-sm">Masuk untuk mengelola data SPMB</p>
-                <form id="form-login" class="space-y-5">
+                <form id="form-login" class="space-y-5 mt-6">
                     <div>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
@@ -783,8 +809,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-lock"></i>
                             </div>
-                            <!-- Password otomatis diisi untuk mode simulasi -->
-                            <input type="password" id="login-password" class="w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition placeholder-slate-400" placeholder="Password" required value="admin123">
+                            <input type="password" id="login-password" class="w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition placeholder-slate-400" placeholder="Password" required>
                         </div>
                     </div>
                     <!-- Ubah type submit menjadi button dan gunakan onclick langsung -->
@@ -803,104 +828,253 @@
     <!-- ========================================== -->
     <!-- VIEW: DASHBOARD ADMIN                      -->
     <!-- ========================================== -->
-    <div id="view-admin" class="view-section bg-slate-100 dark:bg-slate-900 min-h-screen">
-        <!-- Admin Nav -->
-        <nav class="bg-white dark:bg-dark-card border-b border-slate-200 dark:border-slate-800 h-16 fixed w-full z-40 flex items-center justify-between px-6 shadow-sm">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-shield-halved text-primary-600 text-2xl"></i>
-                <span class="font-bold text-lg text-slate-800 dark:text-white hidden sm:block">SPMB Workspace</span>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="text-sm text-slate-500 dark:text-slate-400 hidden md:block">
-                    <i class="fa-regular fa-user mr-1"></i> Admin Utama
-                </div>
-                <button id="theme-toggle-admin" class="p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 rounded-full transition">
-                    <i class="fa-solid fa-moon dark:hidden"></i>
-                    <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
-                </button>
-                <button onclick="app.logout()" class="px-4 py-1.5 bg-red-100 hover:bg-red-200 text-red-600 dark:bg-red-900/30 dark:text-red-400 rounded-lg text-sm font-semibold transition">Logout <i class="fa-solid fa-power-off ml-1"></i></button>
-            </div>
-        </nav>
-
-        <div class="pt-20 px-4 sm:px-6 max-w-7xl mx-auto pb-10">
-            <!-- Stats Row -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div class="bg-white dark:bg-dark-card p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase">Total Pendaftar</p>
-                            <h3 class="text-3xl font-black text-slate-800 dark:text-white mt-1" id="stat-total">0</h3>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
+    <div id="view-admin" class="view-section bg-slate-50 dark:bg-slate-900 min-h-screen">
+        <div class="admin-layout">
+            
+            <!-- Sidebar (Sisi Kiri Hitam) -->
+            <aside class="admin-sidebar hidden md:flex flex-col border-r border-slate-800 shadow-xl z-50 sticky top-0 h-screen">
+                <!-- Sidebar Header -->
+                <div class="h-20 flex items-center px-6 border-b border-slate-800 bg-slate-900/50">
+                    <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                        <i class="fa-solid fa-school"></i>
                     </div>
-                </div>
-                <div class="bg-white dark:bg-dark-card p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase">Menunggu Verifikasi</p>
-                            <h3 class="text-3xl font-black text-amber-500 mt-1" id="stat-menunggu">0</h3>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-clock"></i></div>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-dark-card p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase">Lulus Seleksi</p>
-                            <h3 class="text-3xl font-black text-green-500 mt-1" id="stat-lulus">0</h3>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><i class="fa-solid fa-check"></i></div>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-dark-card p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase">Dalam Zonasi</p>
-                            <h3 class="text-3xl font-black text-purple-500 mt-1" id="stat-zonasi">0</h3>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-map-location-dot"></i></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chart & Table Area -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Charts -->
-                <div class="lg:col-span-1 space-y-6">
-                    <div class="bg-white dark:bg-dark-card p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
-                        <h4 class="font-bold text-slate-700 dark:text-slate-200 mb-4 text-sm uppercase">Pendaftar per Jalur</h4>
-                        <canvas id="chartJalur" height="250"></canvas>
+                    <div>
+                        <h2 class="font-bold text-lg text-white leading-tight">Admin Panel</h2>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">SDN 24 BATANGASE</p>
                     </div>
                 </div>
 
-                <!-- Table -->
-                <div class="lg:col-span-2 bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col h-[600px]">
-                    <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <h4 class="font-bold text-slate-700 dark:text-slate-200">Data Pendaftar Realtime</h4>
+                <!-- Sidebar Menu -->
+                <div class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+                    <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Menu Utama</p>
+                    
+                    <a href="#" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                        <span class="font-medium text-sm">Dashboard Utama</span>
+                    </a>
+                    
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-users w-5 text-center"></i>
+                        <span class="font-medium text-sm">Data Pendaftar</span>
+                        <span class="ml-auto bg-primary-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">New</span>
+                    </a>
+                    
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-file-circle-check w-5 text-center"></i>
+                        <span class="font-medium text-sm">Verifikasi Berkas</span>
+                    </a>
+
+                    <div class="my-4 border-t border-slate-800"></div>
+                    <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Pengaturan</p>
+
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-gear w-5 text-center"></i>
+                        <span class="font-medium text-sm">Konfigurasi SPMB</span>
+                    </a>
+                    
+                    <a href="#" onclick="app.logout()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition mt-auto">
+                        <i class="fa-solid fa-power-off w-5 text-center"></i>
+                        <span class="font-medium text-sm">Keluar Sistem</span>
+                    </a>
+                </div>
+                
+                <!-- Sidebar Footer -->
+                <div class="p-4 border-t border-slate-800 bg-slate-900/50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-slate-300">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-sm font-semibold text-white truncate">Administrator</p>
+                            <p class="text-xs text-slate-400 truncate">admin@sdn24.sch.id</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="admin-content relative">
+                <!-- Top Navbar Khusus Admin -->
+                <nav class="h-20 bg-white dark:bg-dark-card border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 sticky top-0 z-40 shadow-sm">
+                    <div class="flex items-center gap-4">
+                        <!-- Mobile Sidebar Toggle (Bisa dikembangkan nanti) -->
+                        <button class="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+                            <i class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                        <h1 class="font-bold text-xl text-slate-800 dark:text-white hidden sm:block">
+                            <i class="fa-solid fa-shield-halved text-primary-600 mr-2"></i> SPMB Workspace
+                        </h1>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 sm:gap-5">
+                        <!-- Search Bar -->
+                        <div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 rounded-full px-4 py-2 border border-slate-200 dark:border-slate-700">
+                            <i class="fa-solid fa-search text-slate-400"></i>
+                            <input type="text" placeholder="Cari NIK / Pendaftar..." class="bg-transparent border-none outline-none text-sm ml-2 w-48 text-slate-700 dark:text-slate-300" onkeyup="document.getElementById('admin-search').value = this.value; app.filterTable()">
+                        </div>
+
+                        <!-- Theme Toggle -->
+                        <button id="theme-toggle-admin" class="w-10 h-10 flex items-center justify-center text-slate-500 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 rounded-full transition shadow-sm">
+                            <i class="fa-solid fa-moon dark:hidden"></i>
+                            <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                        </button>
+
+                        <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
+
+                        <!-- Back to Web -->
+                        <button onclick="app.navigate('home')" class="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-400 transition hidden sm:flex items-center gap-2">
+                            <i class="fa-solid fa-globe"></i> Lihat Web
+                        </button>
+                    </div>
+                </nav>
+
+                <!-- Dashboard Content -->
+                <div class="p-6 md:p-8 max-w-7xl mx-auto w-full">
+                    
+                    <!-- Welcome Banner -->
+                    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800 dark:text-white">Selamat Datang, Admin! 👋</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Berikut adalah ringkasan data penerimaan siswa baru hari ini.</p>
+                        </div>
                         <div class="flex gap-2">
-                            <input type="text" id="admin-search" placeholder="Cari NIK / Nama..." class="px-3 py-1.5 text-sm border rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white" onkeyup="app.filterTable()">
-                            <button onclick="app.exportExcel()" class="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm shadow flex items-center gap-1"><i class="fa-solid fa-file-excel"></i> Excel</button>
+                            <button onclick="app.exportExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-md shadow-emerald-500/20 transition flex items-center gap-2">
+                                <i class="fa-solid fa-file-excel"></i> Export Excel
+                            </button>
+                            <button class="px-4 py-2 bg-white dark:bg-dark-card border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold shadow-sm transition flex items-center gap-2">
+                                <i class="fa-solid fa-print"></i> Cetak Laporan
+                            </button>
                         </div>
                     </div>
-                    <div class="overflow-auto flex-1 p-0">
-                        <table class="w-full text-left border-collapse" id="data-table">
-                            <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 sticky top-0 text-xs uppercase z-10">
-                                <tr>
-                                    <th class="p-3 font-semibold border-b dark:border-slate-700">No. Daftar</th>
-                                    <th class="p-3 font-semibold border-b dark:border-slate-700">Nama Lengkap</th>
-                                    <th class="p-3 font-semibold border-b dark:border-slate-700">Jalur</th>
-                                    <th class="p-3 font-semibold border-b dark:border-slate-700">Status</th>
-                                    <th class="p-3 font-semibold border-b dark:border-slate-700 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body" class="text-sm text-slate-700 dark:text-slate-300 divide-y dark:divide-slate-800">
-                                <!-- Data injected by JS -->
-                                <tr><td colspan="5" class="p-8 text-center text-slate-400">Memuat data...</td></tr>
-                            </tbody>
-                        </table>
+
+                    <!-- Stats Row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group hover:shadow-md transition">
+                            <div class="absolute right-0 top-0 w-24 h-24 bg-blue-500 opacity-5 rounded-bl-full transform translate-x-4 -translate-y-4 group-hover:scale-110 transition"></div>
+                            <div class="flex justify-between items-center mb-4 relative z-10">
+                                <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl shadow-inner">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                                <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-1 rounded-md">TOTAL</span>
+                            </div>
+                            <h3 class="text-4xl font-black text-slate-800 dark:text-white" id="stat-total">0</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Total Pendaftar</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group hover:shadow-md transition">
+                            <div class="absolute right-0 top-0 w-24 h-24 bg-amber-500 opacity-5 rounded-bl-full transform translate-x-4 -translate-y-4 group-hover:scale-110 transition"></div>
+                            <div class="flex justify-between items-center mb-4 relative z-10">
+                                <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl shadow-inner">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-1 rounded-md">PENDING</span>
+                            </div>
+                            <h3 class="text-4xl font-black text-slate-800 dark:text-white" id="stat-menunggu">0</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Menunggu Verifikasi</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group hover:shadow-md transition">
+                            <div class="absolute right-0 top-0 w-24 h-24 bg-green-500 opacity-5 rounded-bl-full transform translate-x-4 -translate-y-4 group-hover:scale-110 transition"></div>
+                            <div class="flex justify-between items-center mb-4 relative z-10">
+                                <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 flex items-center justify-center text-xl shadow-inner">
+                                    <i class="fa-solid fa-check-double"></i>
+                                </div>
+                                <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-md">APPROVED</span>
+                            </div>
+                            <h3 class="text-4xl font-black text-slate-800 dark:text-white" id="stat-lulus">0</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Lulus Seleksi</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group hover:shadow-md transition">
+                            <div class="absolute right-0 top-0 w-24 h-24 bg-purple-500 opacity-5 rounded-bl-full transform translate-x-4 -translate-y-4 group-hover:scale-110 transition"></div>
+                            <div class="flex justify-between items-center mb-4 relative z-10">
+                                <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl shadow-inner">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <span class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-1 rounded-md">DOMISILI</span>
+                            </div>
+                            <h3 class="text-4xl font-black text-slate-800 dark:text-white" id="stat-zonasi">0</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Pendaftar Zonasi</p>
+                        </div>
+                    </div>
+
+                    <!-- Main Grid Area (Table & Chart) -->
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                        
+                        <!-- Table Column (Lebih lebar: col-span-2) -->
+                        <div class="xl:col-span-2 flex flex-col h-[500px]">
+                            <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col h-full overflow-hidden">
+                                <!-- Table Header Actions -->
+                                <div class="p-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                    <div>
+                                        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Data Pendaftar Terbaru</h3>
+                                        <p class="text-xs text-slate-500">Menampilkan status antrean dokumen.</p>
+                                    </div>
+                                    <div class="flex gap-2 w-full sm:w-auto">
+                                        <div class="relative w-full sm:w-64">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-solid fa-filter text-xs"></i>
+                                            </div>
+                                            <input type="text" id="admin-search" placeholder="Cari Nama/No.Daftar..." class="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-primary-500 outline-none" onkeyup="app.filterTable()">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Table Body -->
+                                <div class="overflow-auto flex-1">
+                                    <table class="w-full text-left border-collapse whitespace-nowrap" id="data-table">
+                                        <thead class="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 sticky top-0 text-[11px] uppercase tracking-wider z-10 border-b border-slate-200 dark:border-slate-700 shadow-sm">
+                                            <tr>
+                                                <th class="py-4 px-5 font-bold">No. Daftar & Tgl</th>
+                                                <th class="py-4 px-5 font-bold">Nama Pendaftar</th>
+                                                <th class="py-4 px-5 font-bold">Jalur</th>
+                                                <th class="py-4 px-5 font-bold">Status Berkas</th>
+                                                <th class="py-4 px-5 font-bold text-center">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body" class="text-sm text-slate-700 dark:text-slate-300 divide-y divide-slate-100 dark:divide-slate-800">
+                                            <!-- Data injected by JS -->
+                                            <tr><td colspan="5" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuat data pendaftar...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Table Footer/Pagination -->
+                                <div class="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex justify-between items-center text-xs text-slate-500">
+                                    <span id="table-info">Menampilkan seluruh data.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart Column (Lebih sempit: col-span-1) -->
+                        <div class="xl:col-span-1 space-y-8">
+                            <!-- Donut Chart Card -->
+                            <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col h-[320px]">
+                                <h3 class="font-bold text-lg text-slate-800 dark:text-white mb-1">Distribusi Jalur</h3>
+                                <p class="text-xs text-slate-500 mb-6">Persentase pendaftar berdasarkan jalur masuk.</p>
+                                <div class="flex-1 relative w-full flex justify-center">
+                                    <canvas id="chartJalur"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Quick Action / Info Card -->
+                            <div class="bg-gradient-to-br from-primary-600 to-blue-800 p-6 rounded-2xl shadow-md text-white relative overflow-hidden">
+                                <div class="absolute right-0 bottom-0 text-white/10 transform translate-x-4 translate-y-4">
+                                    <i class="fa-solid fa-bell text-9xl"></i>
+                                </div>
+                                <h3 class="font-bold text-lg mb-2 relative z-10">Pengingat Penting!</h3>
+                                <p class="text-sm text-blue-100 mb-4 relative z-10 leading-relaxed">
+                                    Pastikan untuk selalu memverifikasi <strong class="text-white">Akte Kelahiran</strong> dan <strong class="text-white">Kartu Keluarga (KK)</strong> pendaftar untuk memastikan kesesuaian umur dan zonasi.
+                                </p>
+                                <button onclick="window.scrollTo(0,0)" class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-lg text-sm font-semibold transition relative z-10">
+                                    Cek Antrean Atas
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 
@@ -1234,10 +1408,10 @@
                 const pass = document.getElementById('login-password').value;
                 this.showLoading();
                 
-                // Logic login akun admin yang sudah terkoneksi di sistem
+                // Logic login akun admin
                 setTimeout(() => {
                     this.hideLoading();
-                    if(email === 'admin@sdn24batangase.sch.id' && pass === 'admin123') { 
+                    if(email === 'admin@sdn24batangase.sch.id' && pass === '110995') { 
                         this.navigate('admin');
                         // Tampilkan notifikasi sukses login
                         Swal.fire({
@@ -1245,7 +1419,7 @@
                             icon: 'success', title: 'Berhasil masuk ke Dashboard Admin'
                         });
                     } else {
-                        Swal.fire('Akses Ditolak', 'Email atau Password salah. Gunakan email: admin@sdn24batangase.sch.id dan sandi: admin123', 'error');
+                        Swal.fire('Akses Ditolak', 'Kredensial tidak valid. Pastikan Email atau Password Anda benar.', 'error');
                     }
                 }, 800);
             },
@@ -1304,25 +1478,49 @@
                 tbody.innerHTML = '';
                 
                 if(data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">Belum ada pendaftar.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400 font-medium">Tidak ada data pendaftar yang cocok.</td></tr>';
                     return;
                 }
 
                 data.forEach(item => {
                     let statusBadge = '';
-                    if(item.status === 'Menunggu Verifikasi') statusBadge = '<span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold border border-amber-200 shadow-sm"><i class="fa-solid fa-clock-rotate-left mr-1"></i> Menunggu</span>';
-                    else if(item.status === 'Lulus Seleksi') statusBadge = '<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold border border-green-200 shadow-sm"><i class="fa-solid fa-check mr-1"></i> Lulus</span>';
-                    else statusBadge = '<span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold border border-red-200 shadow-sm" title="' + (item.alasan || 'Ditolak') + '"><i class="fa-solid fa-xmark mr-1"></i> Ditolak</span>';
+                    let statusBgRow = '';
+                    
+                    if(item.status === 'Menunggu Verifikasi') {
+                        statusBadge = '<span class="px-2.5 py-1 bg-amber-50 text-amber-700 rounded-lg text-xs font-bold border border-amber-200"><i class="fa-solid fa-circle-notch fa-spin mr-1 opacity-70"></i> Pending</span>';
+                    }
+                    else if(item.status === 'Lulus Seleksi') {
+                        statusBadge = '<span class="px-2.5 py-1 bg-green-50 text-green-700 rounded-lg text-xs font-bold border border-green-200"><i class="fa-solid fa-check mr-1 opacity-70"></i> Lulus</span>';
+                        statusBgRow = 'bg-green-50/30 dark:bg-green-900/5';
+                    }
+                    else {
+                        statusBadge = '<span class="px-2.5 py-1 bg-red-50 text-red-700 rounded-lg text-xs font-bold border border-red-200" title="' + (item.alasan || 'Ditolak') + '"><i class="fa-solid fa-xmark mr-1 opacity-70"></i> Ditolak</span>';
+                    }
 
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/50 transition";
+                    tr.className = `hover:bg-slate-100 dark:hover:bg-slate-800/80 transition ${statusBgRow}`;
+                    
+                    // Format Tanggal lebih rapih
+                    const tgl = new Date(item.waktu);
+                    const tglFormat = tgl.toLocaleDateString('id-ID', {day:'2-digit', month:'short'}) + ' ' + tgl.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+
                     tr.innerHTML = `
-                        <td class="p-3 border-b dark:border-slate-700 font-mono text-xs font-semibold text-primary-600 dark:text-primary-400">${item.id}</td>
-                        <td class="p-3 border-b dark:border-slate-700 font-bold text-slate-800 dark:text-slate-200">${item.nama}</td>
-                        <td class="p-3 border-b dark:border-slate-700 text-sm font-medium"><span class="bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded text-slate-600 dark:text-slate-300">${item.jalur}</span></td>
-                        <td class="p-3 border-b dark:border-slate-700">${statusBadge}</td>
-                        <td class="p-3 border-b dark:border-slate-700 text-center">
-                            <button onclick="app.viewDetail('${item.id}')" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition shadow-sm border border-blue-100" title="Validasi Berkas"><i class="fa-solid fa-file-signature"></i> Cek</button>
+                        <td class="py-3 px-5 border-b dark:border-slate-800">
+                            <div class="font-mono text-xs font-bold text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 inline-block px-2 py-0.5 rounded">${item.id}</div>
+                            <div class="text-[10px] text-slate-400 mt-1"><i class="fa-regular fa-clock"></i> ${tglFormat}</div>
+                        </td>
+                        <td class="py-3 px-5 border-b dark:border-slate-800">
+                            <div class="font-bold text-slate-800 dark:text-slate-200 uppercase">${item.nama}</div>
+                            <div class="text-xs text-slate-500 font-mono mt-0.5">NIK: ${item.nik}</div>
+                        </td>
+                        <td class="py-3 px-5 border-b dark:border-slate-800">
+                            <span class="bg-slate-100 border border-slate-200 dark:bg-slate-800 dark:border-slate-700 px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-semibold shadow-sm">${item.jalur}</span>
+                        </td>
+                        <td class="py-3 px-5 border-b dark:border-slate-800">${statusBadge}</td>
+                        <td class="py-3 px-5 border-b dark:border-slate-800 text-center">
+                            <button onclick="app.viewDetail('${item.id}')" class="px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-primary-500 hover:text-primary-600 dark:hover:border-primary-500 dark:hover:text-primary-400 rounded-lg transition shadow-sm text-xs font-bold flex items-center justify-center gap-1 mx-auto">
+                                <i class="fa-solid fa-file-signature text-primary-500"></i> Periksa
+                            </button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -1363,6 +1561,14 @@
                 let statusAlert = '';
                 let actionButtons = '';
 
+                let printButton = `
+                    <div class="flex justify-end mb-4">
+                        <button onclick="app.cetakBuktiPendaftaran('${item.id}')" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-400 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-print"></i> Cetak Bukti Pendaftaran
+                        </button>
+                    </div>
+                `;
+
                 // Styling Status Information
                 if (item.status === 'Lulus Seleksi') {
                     statusAlert = `<div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-start gap-4">
@@ -1391,7 +1597,12 @@
                     ${statusAlert}
                     
                     <div class="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-200 dark:border-slate-700 mb-6">
-                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-200 dark:border-slate-700 pb-2">Data Peserta Didik</h4>
+                        <div class="flex justify-between items-center mb-4 border-b border-slate-200 dark:border-slate-700 pb-2">
+                            <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider">Data Peserta Didik</h4>
+                            <button onclick="app.cetakBuktiPendaftaran('${item.id}')" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-400 rounded border-dashed text-xs font-bold transition flex items-center gap-1">
+                                <i class="fa-solid fa-print"></i> Cetak Bukti Daftar
+                            </button>
+                        </div>
                         <div class="grid grid-cols-2 gap-y-4 gap-x-6 text-sm">
                             <div><p class="text-slate-500 mb-1 text-xs">No. Pendaftaran</p><p class="font-bold font-mono text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 px-2 py-1 rounded inline-block">${item.id}</p></div>
                             <div><p class="text-slate-500 mb-1 text-xs">Tanggal Daftar</p><p class="font-semibold text-slate-800 dark:text-slate-200"><i class="fa-regular fa-calendar mr-1 text-slate-400"></i> ${new Date(item.waktu).toLocaleString('id-ID')}</p></div>
@@ -1534,6 +1745,46 @@
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Pendaftar");
                 XLSX.writeFile(wb, "Data_SPMB_SDN24.xlsx");
+            },
+
+            cetakBuktiPendaftaran(id) {
+                const item = mockDataStore.find(d => d.id === id);
+                if(!item) return;
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Header Bukti Pendaftaran
+                doc.setFontSize(18);
+                doc.setFont("helvetica", "bold");
+                doc.text("BUKTI PENDAFTARAN SPMB", 105, 20, null, null, "center");
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "normal");
+                doc.text("UPTD SDN 24 BATANGASE", 105, 28, null, null, "center");
+                
+                doc.setLineWidth(0.5);
+                doc.line(20, 34, 190, 34);
+
+                // Konten Data Pendaftar
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "bold");
+                doc.text("DATA PESERTA DIDIK", 20, 45);
+                
+                doc.setFont("helvetica", "normal");
+                doc.text("No. Pendaftaran", 20, 55); doc.text(": " + item.id, 65, 55);
+                doc.text("NIK", 20, 65); doc.text(": " + item.nik, 65, 65);
+                doc.text("Nama Lengkap", 20, 75); doc.text(": " + item.nama, 65, 75);
+                doc.text("Jalur Pendaftaran", 20, 85); doc.text(": " + item.jalur, 65, 85);
+                doc.text("Wilayah/Kelurahan", 20, 95); doc.text(": " + item.kelurahan, 65, 95);
+                doc.text("Waktu Daftar", 20, 105); doc.text(": " + new Date(item.waktu).toLocaleString('id-ID'), 65, 105);
+                doc.text("Status Seleksi", 20, 115); doc.text(": " + item.status.toUpperCase(), 65, 115);
+                
+                // Footer
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "italic");
+                doc.text("* Bukti ini dicetak secara resmi dari sistem SPMB UPTD SDN 24 Batangase.", 20, 135);
+                
+                doc.save(`Bukti_Pendaftaran_${item.id}.pdf`);
             },
 
             cetakBuktiLulus() {
