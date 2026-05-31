@@ -120,7 +120,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="app.navigate('home')">
-                    <img src="logo.png.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
+                    <img src="logo.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
                     <div>
                         <h1 class="font-black text-xl leading-tight text-slate-900 dark:text-white tracking-tight">SPMB ONLINE</h1>
                         <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">SDN 24 Batangase</p>
@@ -1069,10 +1069,10 @@
                         <!-- Side Section -->
                         <div class="xl:col-span-1 space-y-6">
                             <!-- Chart -->
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col h-[300px]">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                                 <h3 class="font-black text-slate-800 text-sm mb-1">Distribusi Jalur</h3>
                                 <p class="text-[10px] font-medium text-slate-500 mb-4">Statistik peminatan pendaftar.</p>
-                                <div class="flex-1 relative w-full flex justify-center pb-2">
+                                <div class="relative w-full h-48 flex justify-center items-center">
                                     <canvas id="chartJalur"></canvas>
                                 </div>
                             </div>
@@ -1537,13 +1537,15 @@
                         datasets: [{
                             data: total === 0 ? [1] : [dataCount.Domisili, dataCount.Afirmasi, dataCount.Mutasi],
                             backgroundColor: total === 0 ? ['#f1f5f9'] : ['#3b82f6', '#ec4899', '#10b981'],
-                            borderWidth: 0
+                            borderWidth: 0,
+                            hoverOffset: 4
                         }]
                     },
                     options: {
                         responsive: true, maintainAspectRatio: false,
+                        layout: { padding: 10 },
                         plugins: { 
-                            legend: { display: total !== 0, position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } },
+                            legend: { display: total !== 0, position: 'bottom', labels: { boxWidth: 10, font: { size: 10, family: "'Inter', sans-serif" } } },
                             tooltip: { enabled: total !== 0 }
                         },
                         cutout: '75%'
