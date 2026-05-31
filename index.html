@@ -114,6 +114,24 @@
         /* Loading Overlay */
         #loading-overlay { display: none; }
         #loading-overlay.active { display: flex; }
+
+        /* Admin Layout Utilities */
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+        .admin-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .admin-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-dark-bg text-slate-800 dark:text-slate-200 transition-colors duration-300">
@@ -802,302 +820,243 @@
     <!-- ========================================== -->
     <!-- VIEW: DASHBOARD ADMIN                      -->
     <!-- ========================================== -->
-    <div id="view-admin" class="view-section bg-slate-50 dark:bg-[#0B1120] min-h-screen">
-        
-        <!-- Mobile Sidebar Overlay -->
-        <div id="admin-sidebar-overlay" onclick="app.toggleAdminSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden md:hidden transition-opacity opacity-0"></div>
-
-        <!-- Sidebar -->
-        <aside id="admin-sidebar" class="fixed inset-y-0 left-0 bg-[#0f172a] dark:bg-slate-900 border-r border-slate-800 w-64 flex flex-col z-50 transition-transform transform -translate-x-full md:translate-x-0 duration-300 shadow-2xl md:shadow-none">
+    <div id="view-admin" class="view-section bg-slate-50 min-h-screen font-sans">
+        <!-- Admin Layout Container -->
+        <div class="flex h-screen overflow-hidden">
             
-            <!-- Sidebar Header -->
-            <div class="h-16 flex items-center px-6 border-b border-slate-800 bg-[#0f172a] z-20 shrink-0">
-                <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-primary-500/20 mr-3">
-                    <i class="fa-solid fa-school text-sm"></i>
-                </div>
-                <div>
-                    <h2 class="font-bold text-white text-sm tracking-wide">SPMB Workspace</h2>
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">SDN 24 Batangase</p>
-                </div>
-                <!-- Close button for mobile -->
-                <button onclick="app.toggleAdminSidebar()" class="md:hidden ml-auto text-slate-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
+            <!-- Mobile Overlay -->
+            <div id="admin-sidebar-overlay" onclick="app.toggleAdminSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity opacity-0"></div>
 
-            <!-- Sidebar Nav -->
-            <div class="flex-1 overflow-y-auto py-6 px-4 space-y-1 scrollbar-hide">
-                <p class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Menu Utama</p>
+            <!-- Sidebar -->
+            <aside id="admin-sidebar" class="fixed inset-y-0 left-0 bg-white border-r border-slate-200 w-64 flex flex-col z-50 transform -translate-x-full lg:translate-x-0 lg:static lg:flex transition-transform duration-300 shadow-2xl lg:shadow-none h-full">
                 
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600/10 text-primary-400 font-medium text-sm border border-primary-500/20 transition-all group relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-500 rounded-r-full"></div>
-                    <i class="fa-solid fa-chart-pie w-5 text-center text-primary-500"></i>
-                    Dashboard
-                </a>
-                
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 font-medium text-sm transition-all group">
-                    <i class="fa-solid fa-users w-5 text-center group-hover:text-slate-300"></i>
-                    Data Pendaftar
-                    <span class="ml-auto bg-primary-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">NEW</span>
-                </a>
-                
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 font-medium text-sm transition-all group">
-                    <i class="fa-solid fa-file-circle-check w-5 text-center group-hover:text-slate-300"></i>
-                    Validasi Berkas
-                </a>
-
-                <div class="my-6 border-t border-slate-800"></div>
-                <p class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Pengaturan</p>
-
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 font-medium text-sm transition-all group">
-                    <i class="fa-solid fa-gear w-5 text-center group-hover:text-slate-300"></i>
-                    Konfigurasi
-                </a>
-            </div>
-            
-            <!-- Sidebar Footer (User) -->
-            <div class="p-4 border-t border-slate-800 bg-slate-900 shrink-0">
-                <div class="flex items-center gap-3 bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Utama&background=3b82f6&color=fff&rounded=true" alt="Admin" class="w-9 h-9 rounded-full shadow-sm">
-                    <div class="overflow-hidden flex-1">
-                        <p class="text-sm font-semibold text-white truncate leading-tight">Admin Utama</p>
-                        <p class="text-[10px] text-slate-400 truncate">Sistem Administrator</p>
+                <!-- Brand -->
+                <div class="h-16 flex items-center px-6 border-b border-slate-100 shrink-0">
+                    <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md mr-3">
+                        <i class="fa-solid fa-school text-sm"></i>
                     </div>
-                    <button onclick="app.logout()" class="w-8 h-8 rounded-lg hover:bg-red-500/10 text-slate-400 hover:text-red-400 flex items-center justify-center transition-colors" title="Keluar">
-                        <i class="fa-solid fa-power-off text-sm"></i>
-                    </button>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content Wrapper -->
-        <div class="md:ml-64 flex flex-col min-h-screen transition-all duration-300" id="admin-main">
-            
-            <!-- Top Header -->
-            <header class="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700/60 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-sm">
-                <div class="flex items-center gap-4">
-                    <button onclick="app.toggleAdminSidebar()" class="md:hidden w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center hover:bg-slate-200 transition-colors">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                    <!-- Search -->
-                    <div class="hidden sm:flex items-center relative group">
-                        <i class="fa-solid fa-search absolute left-3 text-slate-400 group-focus-within:text-primary-500 transition-colors text-sm"></i>
-                        <input type="text" id="admin-search-top" placeholder="Cari nama pendaftar, NIK..." class="pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-900 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 w-64 lg:w-80 text-slate-700 dark:text-slate-200 outline-none transition-all placeholder-slate-400" onkeyup="document.getElementById('admin-search').value = this.value; app.filterTable()">
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <!-- Preview Web Btn -->
-                    <button onclick="app.navigate('home')" class="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-md">
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Lihat Web
-                    </button>
-
-                    <!-- Divider -->
-                    <div class="w-px h-5 bg-slate-200 dark:bg-slate-700 hidden sm:block mx-1"></div>
-
-                    <!-- Theme Toggle -->
-                    <button id="theme-toggle-admin" class="w-9 h-9 rounded-full bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-300 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors border border-slate-200 dark:border-slate-600">
-                        <i class="fa-solid fa-moon dark:hidden text-sm"></i>
-                        <i class="fa-solid fa-sun hidden dark:block text-yellow-400 text-sm"></i>
-                    </button>
-
-                    <!-- Notifications -->
-                    <button class="w-9 h-9 rounded-full bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-300 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors border border-slate-200 dark:border-slate-600 relative">
-                        <i class="fa-regular fa-bell text-sm"></i>
-                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full border border-white dark:border-slate-800"></span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Dashboard Content Area -->
-            <main class="flex-1 p-4 sm:p-6 lg:p-8 w-full max-w-screen-2xl mx-auto">
-                
-                <!-- Page Title Area -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-800 dark:text-white tracking-tight">Overview Pendaftaran</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Pantau antrean verifikasi dan status pendaftar secara realtime.</p>
+                        <h2 class="font-bold text-slate-800 text-sm tracking-wide">SPMB Workspace</h2>
+                        <p class="text-[10px] text-slate-500 font-medium">SDN 24 BATANGASE</p>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="app.exportExcel()" class="px-4 py-2 bg-emerald-50 text-emerald-600 border border-emerald-200 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400 rounded-lg text-sm font-semibold hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition-colors flex items-center gap-2 shadow-sm">
-                            <i class="fa-solid fa-file-excel"></i> Export CSV
+                    <button onclick="app.toggleAdminSidebar()" class="lg:hidden ml-auto text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Navigation -->
+                <div class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+                    <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Main Menu</p>
+                    
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-50 text-primary-700 font-semibold text-sm transition">
+                        <i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-primary-600 font-medium text-sm transition group">
+                        <i class="fa-solid fa-users w-5 text-center group-hover:text-primary-500 text-slate-400"></i> Data Pendaftar
+                        <span class="ml-auto bg-primary-100 text-primary-700 text-[10px] font-bold px-2 py-0.5 rounded-full">New</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-primary-600 font-medium text-sm transition group">
+                        <i class="fa-solid fa-file-circle-check w-5 text-center group-hover:text-primary-500 text-slate-400"></i> Validasi Berkas
+                    </a>
+
+                    <div class="my-4 border-t border-slate-100"></div>
+                    <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Settings</p>
+
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-primary-600 font-medium text-sm transition group">
+                        <i class="fa-solid fa-gear w-5 text-center group-hover:text-primary-500 text-slate-400"></i> Konfigurasi
+                    </a>
+                </div>
+
+                <!-- Profile / Logout -->
+                <div class="p-4 border-t border-slate-100 bg-white shrink-0">
+                    <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition cursor-pointer">
+                        <img src="https://ui-avatars.com/api/?name=Admin+Utama&background=f1f5f9&color=0f172a&rounded=true" alt="Admin" class="w-9 h-9 rounded-full border border-slate-200">
+                        <div class="overflow-hidden flex-1">
+                            <p class="text-sm font-bold text-slate-800 truncate">Admin Utama</p>
+                            <p class="text-[10px] text-slate-500 truncate">Administrator</p>
+                        </div>
+                        <button onclick="app.logout()" class="w-8 h-8 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-600 flex items-center justify-center transition" title="Logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         </button>
                     </div>
                 </div>
+            </aside>
 
-                <!-- 4 KPI Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
-                    <!-- Card 1 -->
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-100 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 w-24 h-24 bg-blue-500/5 dark:bg-blue-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                        <div class="flex items-start justify-between">
+            <!-- Main Content -->
+            <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
+                
+                <!-- Top Header -->
+                <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0 z-10">
+                    <div class="flex items-center gap-4">
+                        <button onclick="app.toggleAdminSidebar()" class="lg:hidden w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-200 transition">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        <!-- Search -->
+                        <div class="hidden md:flex items-center bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 focus-within:ring-2 ring-primary-100 transition w-64 lg:w-80">
+                            <i class="fa-solid fa-search text-slate-400 text-xs"></i>
+                            <input type="text" id="admin-search-top" placeholder="Cari pendaftar..." class="bg-transparent border-none outline-none text-sm text-slate-700 ml-2 w-full placeholder-slate-400" onkeyup="document.getElementById('admin-search').value = this.value; app.filterTable()">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <button onclick="app.navigate('home')" class="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition">
+                            <i class="fa-solid fa-globe text-primary-500"></i> Lihat Web
+                        </button>
+                        <div class="w-px h-6 bg-slate-200 mx-1 hidden sm:block"></div>
+                        <button class="w-9 h-9 rounded-full bg-slate-50 text-slate-500 flex items-center justify-center hover:bg-slate-100 transition relative border border-slate-200">
+                            <i class="fa-regular fa-bell"></i>
+                            <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Scrollable Content -->
+                <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                    
+                    <!-- Page Title -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Overview Pendaftaran</h1>
+                            <p class="text-sm text-slate-500 mt-1">Pantau dan kelola antrean verifikasi SPMB secara realtime.</p>
+                        </div>
+                        <button onclick="app.exportExcel()" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 transition flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-file-excel text-emerald-600"></i> Export Data
+                        </button>
+                    </div>
+
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                             <div>
-                                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Pendaftar</p>
-                                <h3 class="text-3xl font-black text-slate-800 dark:text-white" id="stat-total">0</h3>
-                                <div class="mt-2 text-xs font-medium text-blue-600 dark:text-blue-400 flex items-center gap-1">
-                                    <i class="fa-solid fa-arrow-trend-up"></i> Data Hari Ini
-                                </div>
+                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pendaftar</p>
+                                <h3 class="text-3xl font-black text-slate-800" id="stat-total">0</h3>
                             </div>
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl shadow-sm border border-blue-100 dark:border-blue-500/20">
+                            <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
                                 <i class="fa-solid fa-users"></i>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Card 2 -->
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-100 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 w-24 h-24 bg-amber-500/5 dark:bg-amber-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                        <div class="flex items-start justify-between">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                             <div>
-                                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Menunggu Cek</p>
-                                <h3 class="text-3xl font-black text-slate-800 dark:text-white" id="stat-menunggu">0</h3>
-                                <div class="mt-2 text-xs font-medium text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                                    <i class="fa-solid fa-circle-exclamation"></i> Perlu Tindakan
-                                </div>
+                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Menunggu Cek</p>
+                                <h3 class="text-3xl font-black text-slate-800" id="stat-menunggu">0</h3>
                             </div>
-                            <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl shadow-sm border border-amber-100 dark:border-amber-500/20">
-                                <i class="fa-solid fa-hourglass-half"></i>
+                            <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Card 3 -->
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-100 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 w-24 h-24 bg-emerald-500/5 dark:bg-emerald-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                        <div class="flex items-start justify-between">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                             <div>
-                                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Lulus Seleksi</p>
-                                <h3 class="text-3xl font-black text-slate-800 dark:text-white" id="stat-lulus">0</h3>
-                                <div class="mt-2 text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                                    <i class="fa-solid fa-check"></i> Siap Daftar Ulang
-                                </div>
+                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Berkas Diterima</p>
+                                <h3 class="text-3xl font-black text-slate-800" id="stat-lulus">0</h3>
                             </div>
-                            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shadow-sm border border-emerald-100 dark:border-emerald-500/20">
+                            <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl">
                                 <i class="fa-solid fa-check-double"></i>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Card 4 -->
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-100 dark:border-slate-700/60 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 w-24 h-24 bg-purple-500/5 dark:bg-purple-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                        <div class="flex items-start justify-between">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                             <div>
-                                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Jalur Zonasi</p>
-                                <h3 class="text-3xl font-black text-slate-800 dark:text-white" id="stat-zonasi">0</h3>
-                                <div class="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                                    <i class="fa-solid fa-chart-pie"></i> Mayoritas Pendaftar
-                                </div>
+                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Berkas Ditolak</p>
+                                <h3 class="text-3xl font-black text-slate-800" id="stat-ditolak">0</h3>
                             </div>
-                            <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl shadow-sm border border-purple-100 dark:border-purple-500/20">
-                                <i class="fa-solid fa-map-location-dot"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Main Layout Grid (2/3 Table, 1/3 Chart) -->
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-8">
-                    
-                    <!-- Table Section (2 cols wide) -->
-                    <div class="xl:col-span-2 flex flex-col h-[550px]">
-                        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/60 flex flex-col h-full overflow-hidden">
-                            <!-- Table Header -->
-                            <div class="p-5 border-b border-slate-100 dark:border-slate-700/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-800">
-                                <div>
-                                    <h3 class="font-bold text-lg text-slate-800 dark:text-white">Daftar Antrean Verifikasi</h3>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Data diurutkan berdasarkan waktu pendaftaran terbaru.</p>
-                                </div>
-                                <div class="relative w-full sm:w-64">
-                                    <i class="fa-solid fa-filter absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                                    <input type="text" id="admin-search" placeholder="Filter nama / no daftar..." class="w-full pl-8 pr-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-primary-500/50 outline-none transition-all placeholder-slate-400" onkeyup="app.filterTable()">
-                                </div>
-                            </div>
-                            
-                            <!-- Table Content -->
-                            <div class="overflow-x-auto flex-1 bg-white dark:bg-slate-800">
-                                <table class="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
-                                    <thead class="bg-slate-50/80 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 sticky top-0 text-[10px] uppercase font-bold tracking-wider z-10 border-b border-slate-100 dark:border-slate-700/60">
-                                        <tr>
-                                            <th class="py-3 px-5">Info Pendaftar</th>
-                                            <th class="py-3 px-5">Biodata</th>
-                                            <th class="py-3 px-5">Jalur Masuk</th>
-                                            <th class="py-3 px-5">Status Berkas</th>
-                                            <th class="py-3 px-5 text-right">Tindakan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table-body" class="text-sm text-slate-700 dark:text-slate-300 divide-y divide-slate-100 dark:divide-slate-700/60">
-                                        <!-- Injected by JS -->
-                                        <tr><td colspan="5" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data pendaftar...</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <!-- Table Footer -->
-                            <div class="p-4 border-t border-slate-100 dark:border-slate-700/60 bg-white dark:bg-slate-800 flex justify-between items-center text-xs font-medium text-slate-500 dark:text-slate-400">
-                                <span id="table-info">Menampilkan seluruh data.</span>
-                                <div class="flex gap-1">
-                                    <button class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-400 cursor-not-allowed border border-slate-200 dark:border-slate-600"><i class="fa-solid fa-chevron-left"></i></button>
-                                    <button class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
-                                </div>
+                            <div class="w-12 h-12 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-file-circle-xmark"></i>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Chart Section (1 col wide) -->
-                    <div class="xl:col-span-1 space-y-6 sm:space-y-8">
+                    <!-- Main Layout Grid -->
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                         
-                        <!-- Donut Chart -->
-                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/60 flex flex-col h-[300px]">
-                            <div class="mb-4">
-                                <h3 class="font-bold text-lg text-slate-800 dark:text-white">Distribusi Jalur</h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Persentase berdasarkan jalur yang dipilih pendaftar.</p>
-                            </div>
-                            <div class="flex-1 relative w-full flex justify-center pb-2">
-                                <canvas id="chartJalur"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- System Reminder Card -->
-                        <div class="bg-gradient-to-br from-[#1e3a8a] to-primary-600 p-6 rounded-2xl shadow-md border border-primary-500/20 relative overflow-hidden group">
-                            <!-- abstract blob -->
-                            <div class="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none group-hover:scale-150 transition-transform duration-700"></div>
-                            
-                            <div class="flex items-center gap-3 mb-3 relative z-10">
-                                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white backdrop-blur-sm shadow-inner">
-                                    <i class="fa-solid fa-bell text-sm"></i>
+                        <!-- Table Section -->
+                        <div class="xl:col-span-2 flex flex-col">
+                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col h-[500px]">
+                                <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                    <h3 class="font-bold text-slate-800 text-base shrink-0">Data Pendaftar</h3>
+                                    <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full justify-end">
+                                        <!-- Filter Jalur -->
+                                        <select id="filter-jalur" onchange="app.filterTable()" class="px-3 py-1.5 text-sm rounded-lg border border-slate-200 bg-slate-50 text-slate-700 focus:ring-2 focus:ring-primary-100 outline-none cursor-pointer">
+                                            <option value="">Semua Jalur</option>
+                                            <option value="Domisili">Zonasi (Domisili)</option>
+                                            <option value="Afirmasi">Afirmasi</option>
+                                            <option value="Mutasi">Mutasi</option>
+                                        </select>
+                                        <!-- Filter Status -->
+                                        <select id="filter-status" onchange="app.filterTable()" class="px-3 py-1.5 text-sm rounded-lg border border-slate-200 bg-slate-50 text-slate-700 focus:ring-2 focus:ring-primary-100 outline-none cursor-pointer">
+                                            <option value="">Semua Status</option>
+                                            <option value="Menunggu Verifikasi">Pending</option>
+                                            <option value="Lulus Seleksi">Diterima</option>
+                                            <option value="Ditolak">Ditolak</option>
+                                        </select>
+                                        <!-- Search -->
+                                        <div class="relative w-full sm:w-56">
+                                            <i class="fa-solid fa-search absolute left-3 top-2 text-slate-400 text-xs"></i>
+                                            <input type="text" id="admin-search" placeholder="Cari Nama / NISN..." class="w-full pl-8 pr-3 py-1.5 text-sm rounded-lg border border-slate-200 bg-slate-50 text-slate-800 focus:ring-2 focus:ring-primary-100 outline-none transition-all placeholder-slate-400" onkeyup="app.filterTable()">
+                                        </div>
+                                    </div>
                                 </div>
-                                <h3 class="font-bold text-white text-base">Panduan Validasi</h3>
-                            </div>
-                            
-                            <p class="text-xs text-primary-100 leading-relaxed relative z-10 font-medium">
-                                Pastikan selalu mencocokkan tanggal lahir di <strong class="text-white bg-white/10 px-1 rounded">Akte Kelahiran</strong> dengan batasan minimal usia 6 Tahun. Validasi juga kesesuaian alamat di <strong class="text-white bg-white/10 px-1 rounded">KK</strong> untuk jalur Zonasi.
-                            </p>
-                            
-                            <div class="mt-4 pt-4 border-t border-white/10 relative z-10">
-                                <a href="#" class="text-xs text-white hover:text-primary-200 font-semibold flex items-center transition-colors">
-                                    Baca Petunjuk Teknis Juknis SPMB <i class="fa-solid fa-arrow-right ml-1"></i>
-                                </a>
+                                
+                                <div class="overflow-x-auto flex-1">
+                                    <table class="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
+                                        <thead class="bg-slate-50/50 text-slate-500 sticky top-0 text-[10px] uppercase font-bold tracking-wider z-10 border-b border-slate-200">
+                                            <tr>
+                                                <th class="py-3 px-5">ID & Waktu</th>
+                                                <th class="py-3 px-5">Biodata Pendaftar</th>
+                                                <th class="py-3 px-5">Jalur</th>
+                                                <th class="py-3 px-5">Status</th>
+                                                <th class="py-3 px-5 text-right">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body" class="text-sm text-slate-700 divide-y divide-slate-100">
+                                            <!-- Injected by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-between items-center text-xs font-medium text-slate-500">
+                                    <span id="table-info">Menampilkan seluruh data.</span>
+                                </div>
                             </div>
                         </div>
 
+                        <!-- Chart Section -->
+                        <div class="xl:col-span-1 space-y-6">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col h-[300px]">
+                                <h3 class="font-bold text-slate-800 text-base mb-1">Distribusi Jalur</h3>
+                                <p class="text-xs text-slate-500 mb-4">Statistik peminatan pendaftar.</p>
+                                <div class="flex-1 relative w-full flex justify-center pb-2">
+                                    <canvas id="chartJalur"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="bg-blue-50 border border-blue-100 p-5 rounded-2xl flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-lightbulb text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-blue-900 text-sm mb-1">Tips Verifikasi</h4>
+                                    <p class="text-xs text-blue-700 leading-relaxed">
+                                        Pastikan mencocokkan usia pendaftar pada <strong>Akte Kelahiran</strong> (minimal 6 tahun). Serta alamat pada <strong>KK</strong> untuk Jalur Zonasi.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </main>
         </div>
     </div>
 
     <!-- Admin Detail Modal -->
-    <div id="modal-detail" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-card w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
-                <h3 class="font-bold text-lg dark:text-white">Detail Verifikasi Siswa</h3>
-                <button onclick="app.closeModal()" class="text-slate-500 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div id="modal-detail" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh] font-sans">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-white">
+                <h3 class="font-bold text-lg text-slate-800">Detail Validasi Siswa</h3>
+                <button onclick="app.closeModal()" class="w-8 h-8 bg-slate-100 hover:bg-rose-100 text-slate-500 hover:text-rose-600 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-sm"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto" id="modal-content">
+            <div class="p-6 overflow-y-auto bg-slate-50" id="modal-content">
                 <!-- Content injected via JS -->
             </div>
-            <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex gap-2 justify-end" id="modal-actions">
+            <div class="p-4 border-t border-slate-100 bg-white flex gap-3 justify-end" id="modal-actions">
                 <!-- Actions injected via JS -->
             </div>
         </div>
@@ -1164,8 +1123,18 @@
 
             // --- THEME ---
             setupTheme() {
-                const isDark = localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                if (isDark) document.documentElement.classList.add('dark');
+                // Modifikasi: Secara default kita set ke Light Mode agar tampilan putih bersih.
+                // Jika ingin gelap, user bisa mengeklik tombol tema secara manual.
+                let isDark = false;
+                if ('theme' in localStorage) {
+                    isDark = localStorage.theme === 'dark';
+                }
+                
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
                 
                 const toggles = ['theme-toggle', 'theme-toggle-mobile', 'theme-toggle-admin'];
                 toggles.forEach(id => {
@@ -1479,7 +1448,7 @@
                 document.getElementById('stat-total').innerText = mockDataStore.length;
                 document.getElementById('stat-menunggu').innerText = mockDataStore.filter(d => d.status === 'Menunggu Verifikasi').length;
                 document.getElementById('stat-lulus').innerText = mockDataStore.filter(d => d.status === 'Lulus Seleksi').length;
-                document.getElementById('stat-zonasi').innerText = mockDataStore.filter(d => d.jalur === 'Domisili').length;
+                document.getElementById('stat-ditolak').innerText = mockDataStore.filter(d => d.status === 'Ditolak').length;
 
                 this.renderChart();
                 this.renderTable(mockDataStore);
@@ -1515,59 +1484,47 @@
                 tbody.innerHTML = '';
                 
                 if(data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-500 dark:text-slate-400 font-medium">Tidak ada data pendaftar yang cocok.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400 font-medium">Tidak ada data pendaftar yang cocok.</td></tr>';
                     return;
                 }
 
                 data.forEach(item => {
-                    // Modern Badges
                     let statusBadge = '';
-                    
                     if(item.status === 'Menunggu Verifikasi') {
-                        statusBadge = `
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200/60 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Pending
-                            </span>`;
+                        statusBadge = '<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-600 border border-amber-200"><i class="fa-solid fa-circle-notch fa-spin mr-1.5 opacity-70"></i>Pending</span>';
                     }
                     else if(item.status === 'Lulus Seleksi') {
-                        statusBadge = `
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20">
-                                <i class="fa-solid fa-check text-[10px]"></i> Lulus
-                            </span>`;
+                        statusBadge = '<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200"><i class="fa-solid fa-check mr-1.5 opacity-70"></i>Diterima</span>';
                     }
                     else {
-                        statusBadge = `
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200/60 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20" title="${item.alasan || 'Ditolak'}">
-                                <i class="fa-solid fa-xmark text-[10px]"></i> Ditolak
-                            </span>`;
+                        statusBadge = '<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200" title="' + (item.alasan || 'Ditolak') + '"><i class="fa-solid fa-xmark mr-1.5 opacity-70"></i>Ditolak</span>';
                     }
 
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors group";
-                    
-                    // Format Tanggal lebih rapih
+                    // Format Date
                     const tgl = new Date(item.waktu);
                     const tglFormat = tgl.toLocaleDateString('id-ID', {day:'2-digit', month:'short'}) + ' ' + tgl.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
 
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50 transition-colors";
                     tr.innerHTML = `
-                        <td class="py-4 px-5 border-b dark:border-slate-700/60">
-                            <div class="font-medium text-slate-900 dark:text-white font-mono text-[13px] bg-slate-100 dark:bg-slate-700/50 inline-block px-1.5 py-0.5 rounded">${item.id}</div>
-                            <div class="text-[11px] text-slate-500 mt-1 flex items-center gap-1"><i class="fa-regular fa-calendar text-[10px]"></i> ${tglFormat}</div>
+                        <td class="py-3 px-5 border-b border-slate-100">
+                            <div class="font-mono text-xs font-bold text-slate-700">${item.id}</div>
+                            <div class="text-[10px] text-slate-400 mt-1"><i class="fa-regular fa-clock"></i> ${tglFormat}</div>
                         </td>
-                        <td class="py-4 px-5 border-b dark:border-slate-700/60">
-                            <div class="font-bold text-slate-800 dark:text-slate-200 uppercase text-sm">${item.nama}</div>
-                            <div class="text-[11px] text-slate-500 mt-0.5 font-mono">NIK: ${item.nik}</div>
+                        <td class="py-3 px-5 border-b border-slate-100">
+                            <div class="font-bold text-slate-800 uppercase text-sm">${item.nama}</div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-0.5 flex gap-2">
+                                <span>NIK: ${item.nik}</span>
+                                ${item.nisn ? `<span class="text-blue-500">NISN: ${item.nisn}</span>` : ''}
+                            </div>
                         </td>
-                        <td class="py-4 px-5 border-b dark:border-slate-700/60">
-                            <span class="bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-2 py-1 rounded text-slate-600 dark:text-slate-300 text-xs font-medium inline-flex items-center gap-1.5 shadow-sm">
-                                ${item.jalur === 'Domisili' ? '<i class="fa-solid fa-map-location-dot text-primary-500"></i>' : (item.jalur === 'Afirmasi' ? '<i class="fa-solid fa-heart text-pink-500"></i>' : '<i class="fa-solid fa-truck-fast text-green-500"></i>')}
-                                ${item.jalur}
-                            </span>
+                        <td class="py-3 px-5 border-b border-slate-100">
+                            <span class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md text-[11px] font-bold border border-slate-200">${item.jalur}</span>
                         </td>
-                        <td class="py-4 px-5 border-b dark:border-slate-700/60">${statusBadge}</td>
-                        <td class="py-4 px-5 border-b dark:border-slate-700/60 text-right">
-                            <button onclick="app.viewDetail('${item.id}')" class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 text-sm font-semibold transition-colors px-3 py-1.5 hover:bg-primary-50 dark:hover:bg-primary-900/30 rounded-lg">
-                                Periksa <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                        <td class="py-3 px-5 border-b border-slate-100">${statusBadge}</td>
+                        <td class="py-3 px-5 border-b border-slate-100 text-right">
+                            <button onclick="app.viewDetail('${item.id}')" class="text-primary-600 hover:text-primary-800 text-xs font-bold transition px-3 py-1.5 bg-primary-50 hover:bg-primary-100 rounded-lg">
+                                Verifikasi <i class="fa-solid fa-angle-right ml-1"></i>
                             </button>
                         </td>
                     `;
@@ -1577,9 +1534,17 @@
 
             filterTable() {
                 const query = document.getElementById('admin-search').value.toLowerCase();
-                const filtered = mockDataStore.filter(d => 
-                    d.nama.toLowerCase().includes(query) || d.id.toLowerCase().includes(query)
-                );
+                const filterJalur = document.getElementById('filter-jalur').value;
+                const filterStatus = document.getElementById('filter-status').value;
+
+                const filtered = mockDataStore.filter(d => {
+                    const matchSearch = d.nama.toLowerCase().includes(query) || d.id.toLowerCase().includes(query) || (d.nisn && d.nisn.toLowerCase().includes(query));
+                    const matchJalur = filterJalur ? d.jalur === filterJalur : true;
+                    const matchStatus = filterStatus ? d.status === filterStatus : true;
+                    
+                    return matchSearch && matchJalur && matchStatus;
+                });
+                
                 this.renderTable(filtered);
             },
 
@@ -1609,82 +1574,88 @@
                 let statusAlert = '';
                 let actionButtons = '';
 
-                let printButton = `
-                    <div class="flex justify-end mb-4">
-                        <button onclick="app.cetakBuktiPendaftaran('${item.id}')" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-400 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
-                            <i class="fa-solid fa-print"></i> Cetak Bukti Pendaftaran
-                        </button>
-                    </div>
-                `;
-
                 // Styling Status Information
                 if (item.status === 'Lulus Seleksi') {
-                    statusAlert = `<div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0"><i class="fa-solid fa-check text-xl"></i></div>
-                        <div><h4 class="font-bold text-green-800">Telah Diluluskan</h4><p class="text-sm text-green-600 mt-1">Siswa ini telah tervalidasi dan lulus seleksi administrasi.</p></div>
+                    statusAlert = `
+                    <div class="mb-5 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0"><i class="fa-solid fa-check text-xl"></i></div>
+                        <div><h4 class="font-bold text-emerald-800 text-sm">Berkas Telah Diterima (Verified)</h4><p class="text-xs text-emerald-600 mt-1">Siswa ini telah tervalidasi memenuhi syarat PPDB.</p></div>
                     </div>`;
-                    actionButtons = `<button onclick="app.confirmUpdateStatus('${item.id}', 'Menunggu Verifikasi')" class="px-6 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl font-semibold transition w-full"><i class="fa-solid fa-rotate-left mr-2"></i>Batalkan Validasi (Reset Status)</button>`;
+                    actionButtons = `<button onclick="app.confirmUpdateStatus('${item.id}', 'Menunggu Verifikasi')" class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl text-sm font-bold transition w-full"><i class="fa-solid fa-rotate-left mr-2"></i>Batalkan Verifikasi</button>`;
                 } else if (item.status === 'Ditolak') {
-                    statusAlert = `<div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0"><i class="fa-solid fa-xmark text-xl"></i></div>
-                        <div><h4 class="font-bold text-red-800">Berkas Ditolak</h4><p class="text-sm text-red-600 mt-1"><strong>Alasan:</strong> ${item.alasan || 'Tidak memenuhi syarat'}</p></div>
+                    statusAlert = `
+                    <div class="mb-5 p-4 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 shrink-0"><i class="fa-solid fa-xmark text-xl"></i></div>
+                        <div><h4 class="font-bold text-rose-800 text-sm">Berkas Ditolak / Perlu Perbaikan</h4><p class="text-xs text-rose-600 mt-1"><strong>Alasan:</strong> ${item.alasan || 'Tidak memenuhi syarat'}</p></div>
                     </div>`;
-                    actionButtons = `<button onclick="app.confirmUpdateStatus('${item.id}', 'Menunggu Verifikasi')" class="px-6 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl font-semibold transition w-full"><i class="fa-solid fa-rotate-left mr-2"></i>Tinjau Ulang (Reset Status)</button>`;
+                    actionButtons = `<button onclick="app.confirmUpdateStatus('${item.id}', 'Menunggu Verifikasi')" class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl text-sm font-bold transition w-full"><i class="fa-solid fa-rotate-left mr-2"></i>Tinjau Ulang (Reset)</button>`;
                 } else {
-                    statusAlert = `<div class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-4">
+                    statusAlert = `
+                    <div class="mb-5 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-4">
                         <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0"><i class="fa-solid fa-magnifying-glass text-xl"></i></div>
-                        <div><h4 class="font-bold text-amber-800">Menunggu Validasi Anda</h4><p class="text-sm text-amber-600 mt-1">Harap periksa keaslian dan kesesuaian dokumen pendaftar.</p></div>
+                        <div><h4 class="font-bold text-amber-800 text-sm">Menunggu Verifikasi</h4><p class="text-xs text-amber-700 mt-1">Lakukan pengecekan data dan dokumen di bawah ini.</p></div>
                     </div>`;
                     actionButtons = `
-                        <button onclick="app.confirmUpdateStatus('${item.id}', 'Ditolak')" class="flex-1 py-3 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 rounded-xl font-bold transition flex items-center justify-center gap-2"><i class="fa-solid fa-xmark"></i> Tolak Berkas</button>
-                        <button onclick="app.confirmUpdateStatus('${item.id}', 'Lulus Seleksi')" class="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition shadow-lg shadow-green-500/30 flex items-center justify-center gap-2"><i class="fa-solid fa-check-double"></i> Validasi & Luluskan</button>
+                        <button onclick="app.confirmUpdateStatus('${item.id}', 'Ditolak')" class="flex-1 py-2.5 bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2"><i class="fa-solid fa-xmark"></i> Tolak / Kembalikan Berkas</button>
+                        <button onclick="app.confirmUpdateStatus('${item.id}', 'Lulus Seleksi')" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2"><i class="fa-solid fa-check"></i> Terima Berkas</button>
                     `;
                 }
                 
                 content.innerHTML = `
                     ${statusAlert}
                     
-                    <div class="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-200 dark:border-slate-700 mb-6">
-                        <div class="flex justify-between items-center mb-4 border-b border-slate-200 dark:border-slate-700 pb-2">
-                            <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider">Data Peserta Didik</h4>
-                            <button onclick="app.cetakBuktiPendaftaran('${item.id}')" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-400 rounded border-dashed text-xs font-bold transition flex items-center gap-1">
-                                <i class="fa-solid fa-print"></i> Cetak Bukti Daftar
-                            </button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                        <!-- Data Diri Card -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="text-xs font-black text-primary-600 uppercase tracking-wider mb-4 border-b border-slate-100 pb-2 flex items-center gap-2"><i class="fa-solid fa-user"></i> Data Calon Siswa</h4>
+                            <div class="space-y-3 text-sm">
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">Nama Lengkap</p><p class="font-bold text-slate-800 uppercase">${item.nama}</p></div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div><p class="text-slate-400 text-[10px] font-bold uppercase">NIK</p><p class="font-mono text-slate-700">${item.nik}</p></div>
+                                    <div><p class="text-slate-400 text-[10px] font-bold uppercase">NISN</p><p class="font-mono text-slate-700">${item.nisn || '-'}</p></div>
+                                </div>
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">Tempat, Tanggal Lahir</p><p class="font-medium text-slate-700">${item.tempat_lahir || 'Maros'}, ${item.tanggal_lahir || '-'}</p></div>
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">Alamat Lengkap</p><p class="font-medium text-slate-700 leading-tight">${item.alamat || '-'}, RT/RW ${item.rtrw || '-'}, Kel. ${item.kelurahan}</p></div>
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">Jalur Pendaftaran</p><p class="font-bold text-primary-600">${item.jalur}</p></div>
+                            </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-y-4 gap-x-6 text-sm">
-                            <div><p class="text-slate-500 mb-1 text-xs">No. Pendaftaran</p><p class="font-bold font-mono text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 px-2 py-1 rounded inline-block">${item.id}</p></div>
-                            <div><p class="text-slate-500 mb-1 text-xs">Tanggal Daftar</p><p class="font-semibold text-slate-800 dark:text-slate-200"><i class="fa-regular fa-calendar mr-1 text-slate-400"></i> ${new Date(item.waktu).toLocaleString('id-ID')}</p></div>
-                            <div class="col-span-2"><p class="text-slate-500 mb-1 text-xs">Nama Lengkap</p><p class="font-bold text-lg uppercase text-slate-800 dark:text-white">${item.nama}</p></div>
-                            <div><p class="text-slate-500 mb-1 text-xs">NIK</p><p class="font-bold font-mono text-slate-800 dark:text-slate-200">${item.nik}</p></div>
-                            <div><p class="text-slate-500 mb-1 text-xs">Jalur Pendaftaran</p><p class="font-bold text-slate-800 dark:text-slate-200"><span class="bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded text-xs">${item.jalur}</span></p></div>
-                            <div class="col-span-2"><p class="text-slate-500 mb-1 text-xs">Wilayah / Kelurahan</p><p class="font-semibold text-slate-800 dark:text-slate-200"><i class="fa-solid fa-map-pin mr-1 text-red-400"></i> ${item.kelurahan}</p></div>
+
+                        <!-- Data Orang Tua Card -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="text-xs font-black text-primary-600 uppercase tracking-wider mb-4 border-b border-slate-100 pb-2 flex items-center gap-2"><i class="fa-solid fa-users"></i> Data Orang Tua</h4>
+                            <div class="space-y-3 text-sm">
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">Nama Ayah</p><p class="font-bold text-slate-800 uppercase">${item.nama_ayah || '-'}</p></div>
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">Nama Ibu</p><p class="font-bold text-slate-800 uppercase">${item.nama_ibu || '-'}</p></div>
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">No. Handphone/WA</p><p class="font-mono text-blue-600">${item.hp_ortu || '-'}</p></div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-200 dark:border-slate-700 pb-2">Pemeriksaan Dokumen</h4>
-                        <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-info-circle mr-1"></i>Klik dokumen untuk melihat pratinjau (simulasi).</p>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <h4 class="text-xs font-black text-primary-600 uppercase tracking-wider mb-3 border-b border-slate-100 pb-2 flex items-center gap-2"><i class="fa-solid fa-folder-open"></i> Preview Dokumen</h4>
+                        <p class="text-xs text-slate-500 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100">Silakan periksa dan pastikan dokumen yang diunggah valid dan terbaca jelas.</p>
+                        
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <button onclick="app.previewDocument('Kartu Keluarga (KK)', '${item.nama}')" class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card border border-slate-200 dark:border-slate-600 rounded-lg hover:border-primary-500 hover:shadow-md transition text-left group">
-                                <div class="w-10 h-10 rounded bg-blue-50 text-blue-500 flex items-center justify-center shrink-0 group-hover:bg-blue-500 group-hover:text-white transition"><i class="fa-solid fa-file-pdf text-xl"></i></div>
-                                <div class="overflow-hidden">
-                                    <p class="font-bold text-sm text-slate-700 dark:text-slate-200 truncate">Kartu Keluarga (KK)</p>
-                                    <p class="text-xs text-slate-400">Wajib Diperiksa</p>
+                            <button onclick="app.previewDocument('Kartu Keluarga (KK)', '${item.nama}')" class="w-full flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-lg hover:border-primary-400 transition text-left group shadow-sm hover:shadow">
+                                <div class="w-10 h-10 rounded bg-white border border-slate-200 text-slate-400 flex items-center justify-center shrink-0 group-hover:text-primary-500 transition"><i class="fa-solid fa-file-pdf text-lg"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-slate-800">Kartu Keluarga (KK)</p>
+                                    <p class="text-[10px] text-slate-500 font-medium uppercase mt-0.5">Wajib Diperiksa</p>
                                 </div>
                             </button>
-                            <button onclick="app.previewDocument('Akta Kelahiran', '${item.nama}')" class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card border border-slate-200 dark:border-slate-600 rounded-lg hover:border-primary-500 hover:shadow-md transition text-left group">
-                                <div class="w-10 h-10 rounded bg-pink-50 text-pink-500 flex items-center justify-center shrink-0 group-hover:bg-pink-500 group-hover:text-white transition"><i class="fa-solid fa-file-pdf text-xl"></i></div>
-                                <div class="overflow-hidden">
-                                    <p class="font-bold text-sm text-slate-700 dark:text-slate-200 truncate">Akta Kelahiran</p>
-                                    <p class="text-xs text-slate-400">Wajib Diperiksa</p>
+                            <button onclick="app.previewDocument('Akta Kelahiran', '${item.nama}')" class="w-full flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-lg hover:border-primary-400 transition text-left group shadow-sm hover:shadow">
+                                <div class="w-10 h-10 rounded bg-white border border-slate-200 text-slate-400 flex items-center justify-center shrink-0 group-hover:text-primary-500 transition"><i class="fa-solid fa-file-pdf text-lg"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-slate-800">Akta Kelahiran</p>
+                                    <p class="text-[10px] text-slate-500 font-medium uppercase mt-0.5">Wajib Diperiksa</p>
                                 </div>
                             </button>
                             ${item.jalur !== 'Domisili' ? `
-                            <button onclick="app.previewDocument('Dokumen ${item.jalur}', '${item.nama}')" class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card border border-slate-200 dark:border-slate-600 rounded-lg hover:border-primary-500 hover:shadow-md transition text-left group sm:col-span-2">
-                                <div class="w-10 h-10 rounded bg-amber-50 text-amber-500 flex items-center justify-center shrink-0 group-hover:bg-amber-500 group-hover:text-white transition"><i class="fa-solid fa-file-circle-check text-xl"></i></div>
-                                <div class="overflow-hidden">
-                                    <p class="font-bold text-sm text-slate-700 dark:text-slate-200 truncate">Berkas Khusus Jalur ${item.jalur}</p>
-                                    <p class="text-xs text-slate-400">Wajib Diperiksa</p>
+                            <button onclick="app.previewDocument('Dokumen ${item.jalur}', '${item.nama}')" class="w-full sm:col-span-2 flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg hover:border-amber-400 transition text-left group shadow-sm">
+                                <div class="w-10 h-10 rounded bg-white border border-amber-200 text-amber-500 flex items-center justify-center shrink-0 group-hover:text-amber-600 transition"><i class="fa-solid fa-file-circle-check text-lg"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-amber-900">Berkas Pendukung Jalur ${item.jalur}</p>
+                                    <p class="text-[10px] text-amber-700 font-medium uppercase mt-0.5">Wajib Diperiksa</p>
                                 </div>
                             </button>
                             ` : ''}
@@ -1692,8 +1663,7 @@
                     </div>
                 `;
 
-                // Handle full width buttons for actions
-                actions.className = "p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 flex gap-3 justify-between w-full";
+                actions.className = "p-4 border-t border-slate-100 bg-slate-50 flex gap-3 w-full";
                 actions.innerHTML = actionButtons;
 
                 document.getElementById('modal-detail').classList.remove('hidden');
@@ -1734,7 +1704,7 @@
                         cancelButtonText: 'Batal',
                         inputValidator: (value) => {
                             if (!value) {
-                                return 'Alasan penolakan wajib diisi untuk transparansi!'
+                                return 'Alasan penolakan / catatan perbaikan wajib diisi untuk diinfokan ke Orang Tua!'
                             }
                         }
                     }).then((result) => {
@@ -1859,9 +1829,9 @@
             // Seed Mock Data for Preview
             seedMockData() {
                 mockDataStore = [
-                    { id: 'SPMB-2026-001', nik: '7309012345678901', nama: 'AHMAD FAUZAN', jalur: 'Domisili', kelurahan: 'Bontoa', status: 'Lulus Seleksi', waktu: '2026-06-01T08:00:00Z' },
-                    { id: 'SPMB-2026-002', nik: '7309012345678902', nama: 'SITI AMINAH', jalur: 'Afirmasi', kelurahan: 'Hasanuddin', status: 'Menunggu Verifikasi', waktu: '2026-06-02T09:30:00Z' },
-                    { id: 'SPMB-2026-003', nik: '7309012345678903', nama: 'BUDI SANTOSO', jalur: 'Mutasi', kelurahan: 'Lainnya', status: 'Ditolak', alasan: 'Surat tugas orang tua tidak dilampirkan atau kedaluwarsa.', waktu: '2026-06-03T10:15:00Z' },
+                    { id: 'SPMB-2026-001', nik: '7309012345678901', nisn: '0165432101', nama: 'AHMAD FAUZAN', tempat_lahir: 'Makassar', tanggal_lahir: '12 Mei 2019', alamat: 'Jl. Poros Batangase No. 12', rtrw: '001/002', nama_ayah: 'Suryadi', nama_ibu: 'Rahmawati', hp_ortu: '081234567890', jalur: 'Domisili', kelurahan: 'Bontoa', status: 'Lulus Seleksi', waktu: '2026-06-01T08:00:00Z' },
+                    { id: 'SPMB-2026-002', nik: '7309012345678902', nisn: '0165432102', nama: 'SITI AMINAH', tempat_lahir: 'Maros', tanggal_lahir: '05 Agustus 2019', alamat: 'Perumahan Hasanuddin Permai Blok B/4', rtrw: '003/001', nama_ayah: 'Hasanuddin', nama_ibu: 'Khadijah', hp_ortu: '082198765432', jalur: 'Afirmasi', kelurahan: 'Hasanuddin', status: 'Menunggu Verifikasi', waktu: '2026-06-02T09:30:00Z' },
+                    { id: 'SPMB-2026-003', nik: '7309012345678903', nisn: '', nama: 'BUDI SANTOSO', tempat_lahir: 'Gowa', tanggal_lahir: '20 Februari 2020', alamat: 'Jl. Pemuda No. 45', rtrw: '002/005', nama_ayah: 'Agus Santoso', nama_ibu: 'Rina Maryati', hp_ortu: '085234567891', jalur: 'Mutasi', kelurahan: 'Lainnya', status: 'Ditolak', alasan: 'Surat tugas mutasi orang tua tidak dilampirkan. Mohon perbaiki dan unggah ulang.', waktu: '2026-06-03T10:15:00Z' },
                 ];
             }
         };
