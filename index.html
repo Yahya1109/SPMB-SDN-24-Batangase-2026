@@ -119,6 +119,7 @@
         .admin-layout {
             display: flex;
             min-height: 100vh;
+            width: 100%;
         }
         .admin-sidebar {
             width: 280px;
@@ -1124,10 +1125,21 @@
 
             // --- NAVIGATION ---
             navigate(viewId) {
+                // Sembunyikan semua view section
                 document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+                
+                // Tampilkan view yang dituju
                 document.getElementById(`view-${viewId}`).classList.add('active');
                 this.currentView = viewId;
                 window.scrollTo(0,0);
+
+                // Mengatur visibilitas Navbar Publik agar tidak tumpang tindih dengan Dashboard/Login Admin
+                const mainNav = document.getElementById('navbar');
+                if (viewId === 'admin' || viewId === 'login') {
+                    mainNav.style.display = 'none';
+                } else {
+                    mainNav.style.display = '';
+                }
 
                 if(viewId === 'admin') {
                     this.loadAdminDashboard(); 
