@@ -126,7 +126,7 @@
                     <img src="logo.png.png" alt="Logo SDN 24 Batangase" class="w-10 h-10 object-contain mr-3 drop-shadow-md" onerror="this.src='https://placehold.co/400x400/2563eb/ffffff?text=SD'; this.classList.add('rounded-xl');">
                     <div>
                         <h1 class="font-black text-xl leading-tight text-slate-900 dark:text-white tracking-tight">SPMB ONLINE</h1>
-                        <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">UPTD SDN 24 Batangase</p>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">SDN 24 Batangase</p>
                     </div>
                 </div>
 
@@ -261,7 +261,7 @@
                         <li class="flex items-start gap-3">
                             <i class="fa-solid fa-circle-check text-emerald-500 text-lg shrink-0 mt-0.5"></i>
                             <span class="text-slate-700 font-medium text-sm leading-relaxed">
-                                Fotocopy <strong>Ijazah/SKL</strong> (Surat Keterangan Lulus dari TK).
+                                Fotocopy <strong>Ijazah/SKL</strong> (Surat Keterangan Lulus dari TK) - *Opsional jika tidak lulus TK.
                             </span>
                         </li>
                         <li class="flex items-start gap-3">
@@ -279,7 +279,7 @@
                         <li class="flex items-start gap-3">
                             <i class="fa-solid fa-circle-check text-emerald-500 text-lg shrink-0 mt-0.5"></i>
                             <span class="text-slate-700 font-medium text-sm leading-relaxed">
-                                Fotocopy bukti keikutsertaan program penanganan keluarga tidak mampu, seperti <strong>Kartu Keluarga Sejahtera, PKH, dan Kartu Badan Penyelenggara Bantuan Sosial</strong> <em class="text-slate-400 font-normal">(jika ada)</em>.
+                                Fotocopy bukti keikutsertaan program penanganan keluarga tidak mampu, seperti <strong>Kartu Keluarga Sejahtera, PKH, dan Kartu Badan Penyelenggara Bantuan Sosial</strong> <em class="text-slate-400 font-normal">(wajib bagi Jalur Afirmasi)</em>.
                             </span>
                         </li>
                     </ul>
@@ -656,6 +656,19 @@
                                 </select>
                             </div>
 
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Pernah Sekolah TK? <span class="text-red-500">*</span></label>
+                                <select id="lulusan_tk" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white text-sm focus:ring-2 focus:ring-primary-500 transition outline-none" required onchange="app.toggleTK()">
+                                    <option value="">Pilih...</option>
+                                    <option value="Ya">Ya (Lulusan TK)</option>
+                                    <option value="Tidak">Tidak</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5 hidden animate-fade-in" id="container_nama_tk">
+                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Nama Sekolah TK <span class="text-red-500">*</span></label>
+                                <input type="text" id="nama_tk" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white text-sm focus:ring-2 focus:ring-primary-500 transition uppercase outline-none" placeholder="Contoh: TK ABA HASANUDDIN">
+                            </div>
+
                             <!-- Alamat Section -->
                             <div class="md:col-span-2 mt-4 pt-5 border-t border-slate-100">
                                 <h4 class="font-bold text-slate-800 text-sm mb-4">Informasi Alamat & Zonasi</h4>
@@ -751,21 +764,23 @@
                         </p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="upload-container">
-                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 transition-colors">
                                 <label class="block text-sm font-bold text-slate-800 mb-1">Kartu Keluarga (KK) <span class="text-red-500">*</span></label>
                                 <p class="text-[10px] text-slate-500 mb-3">Dokumen wajib untuk validasi domisili dan NIK.</p>
                                 <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" required onchange="app.validateFile(this, 'kk')">
                             </div>
-                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 transition-colors">
                                 <label class="block text-sm font-bold text-slate-800 mb-1">Akta Kelahiran <span class="text-red-500">*</span></label>
                                 <p class="text-[10px] text-slate-500 mb-3">Dokumen wajib untuk validasi usia calon peserta didik.</p>
                                 <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-700 hover:file:bg-primary-200 cursor-pointer" required onchange="app.validateFile(this, 'akta')">
                             </div>
-                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 md:col-span-2">
-                                <label class="block text-sm font-bold text-slate-800 mb-1">Ijazah/SKL dari TK <span class="text-slate-400 font-normal text-xs ml-1">(Opsional)</span></label>
-                                <p class="text-[10px] text-slate-500 mb-3">Surat Keterangan Lulus. Boleh dikosongkan jika belum ada/tidak TK.</p>
-                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer" onchange="app.validateFile(this, 'ijazah')">
+                            
+                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 md:col-span-2 transition-colors">
+                                <label class="block text-sm font-bold text-slate-800 mb-1">Ijazah/SKL dari TK <span id="label-skl-opsional" class="text-slate-400 font-normal text-xs ml-1">(Opsional)</span><span id="label-skl-wajib" class="text-red-500 hidden">*</span></label>
+                                <p class="text-[10px] text-slate-500 mb-3" id="desc-skl">Surat Keterangan Lulus. Boleh dikosongkan jika tidak lulus dari TK.</p>
+                                <input type="file" id="upload_skl" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer transition-colors" onchange="app.validateFile(this, 'ijazah')">
                             </div>
+
                             <!-- Dynamic uploads container -->
                             <div id="dynamic-uploads" class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5"></div>
                         </div>
@@ -895,7 +910,7 @@
                     <img src="logo.png.png" alt="Logo" class="w-8 h-8 object-contain mr-3 drop-shadow" onerror="this.src='https://placehold.co/100x100/2563eb/ffffff?text=SD'; this.classList.add('rounded-lg');">
                     <div>
                         <h2 class="font-black text-slate-800 text-sm tracking-wide">Portal Admin SPMB</h2>
-                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">SDN 24 BATANGASE</p>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">UPTD SDN 24 BATANGASE</p>
                     </div>
                     <button onclick="app.toggleAdminSidebar()" class="lg:hidden ml-auto text-slate-400 hover:text-slate-600">
                         <i class="fa-solid fa-xmark text-lg"></i>
@@ -1130,7 +1145,6 @@
         // ---------------------------------------------------------
         // 1. SUPABASE CONFIGURATION
         // ---------------------------------------------------------
-        // GANTI DENGAN URL DAN ANON KEY SUPABASE ANDA!
         const SUPABASE_URL = 'https://budjhyayxzaeffjpblbd.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1ZGpoeWF5eHphZWZmanBibGJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMjI0OTAsImV4cCI6MjA5NTc5ODQ5MH0.GEE5cuvrdVG-vDCjywYqmqZ6YNep4kwMNuxzNjwUPHg';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -1270,6 +1284,42 @@
                 }
             },
 
+            // --- LULUSAN TK LOGIC ---
+            toggleTK() {
+                const isTK = document.getElementById('lulusan_tk').value === 'Ya';
+                const containerNamaTK = document.getElementById('container_nama_tk');
+                const inputNamaTK = document.getElementById('nama_tk');
+                
+                // Elements from Step 4
+                const uploadSKL = document.getElementById('upload_skl');
+                const labelOpsional = document.getElementById('label-skl-opsional');
+                const labelWajib = document.getElementById('label-skl-wajib');
+                const descSKL = document.getElementById('desc-skl');
+
+                if (isTK) {
+                    containerNamaTK.classList.remove('hidden');
+                    inputNamaTK.setAttribute('required', 'required');
+                    
+                    uploadSKL.setAttribute('required', 'required');
+                    uploadSKL.classList.replace('file:bg-slate-200', 'file:bg-primary-100');
+                    uploadSKL.classList.replace('file:text-slate-700', 'file:text-primary-700');
+                    labelOpsional.classList.add('hidden');
+                    labelWajib.classList.remove('hidden');
+                    descSKL.innerText = 'Wajib diunggah karena Anda menyatakan pendaftar adalah Lulusan TK.';
+                } else {
+                    containerNamaTK.classList.add('hidden');
+                    inputNamaTK.removeAttribute('required');
+                    inputNamaTK.value = '';
+                    
+                    uploadSKL.removeAttribute('required');
+                    uploadSKL.classList.replace('file:bg-primary-100', 'file:bg-slate-200');
+                    uploadSKL.classList.replace('file:text-primary-700', 'file:text-slate-700');
+                    labelOpsional.classList.remove('hidden');
+                    labelWajib.classList.add('hidden');
+                    descSKL.innerText = 'Surat Keterangan Lulus. Boleh dikosongkan karena tidak lulus dari TK.';
+                }
+            },
+
             // --- ZONASI LOGIC ---
             updateLingkungan() {
                 const kel = document.getElementById('kelurahan').value;
@@ -1395,6 +1445,8 @@
                     alamat: document.getElementById('alamat').value,
                     rtrw: document.getElementById('rtrw').value,
                     kelurahan: document.getElementById('kelurahan').value,
+                    lulusan_tk: document.getElementById('lulusan_tk').value,
+                    nama_tk: document.getElementById('nama_tk').value.toUpperCase(),
                     nama_ayah: document.getElementById('nama_ayah').value,
                     nama_ibu: document.getElementById('nama_ibu').value,
                     hp_ortu: document.getElementById('hp_ortu').value,
@@ -1537,7 +1589,7 @@
                             icon: 'success', title: 'Akses Diberikan'
                         });
                     } else {
-                        Swal.fire('Akses Ditolak', 'Mohon maaf sandi yang anda masukkan salah, Mohon Hubungi Admin (Pak Yahya).', 'error');
+                        Swal.fire('Akses Ditolak', 'Mohon maaf sandi yang anda masukkan salah, silahkan hubungi admin (Pak Yahya).', 'error');
                     }
                 }, 800);
             },
@@ -1809,6 +1861,7 @@
                                     <div><p class="text-slate-400 text-[10px] font-bold uppercase">NISN</p><p class="font-mono text-xs font-bold text-slate-700">${item.nisn || '-'}</p></div>
                                 </div>
                                 <div><p class="text-slate-400 text-[10px] font-bold uppercase">TTL & Usia (per 1 Juli 2026)</p><p class="font-bold text-xs text-slate-700">${item.tempat_lahir || '-'}, ${item.tanggal_lahir || '-'}</p><p class="font-bold text-xs text-primary-600 flex items-center mt-1">${ageDetail}</p></div>
+                                <div><p class="text-slate-400 text-[10px] font-bold uppercase">Riwayat TK</p><p class="font-bold text-xs text-slate-700">${item.lulusan_tk === 'Ya' ? 'Lulusan ' + item.nama_tk : 'Tidak / Bukan Lulusan TK'}</p></div>
                                 <div><p class="text-slate-400 text-[10px] font-bold uppercase">Alamat Domisili</p><p class="font-bold text-xs text-slate-700 leading-relaxed">${item.alamat || '-'}, RT/RW ${item.rtrw || '-'}, Kel. ${item.kelurahan}</p></div>
                                 <div><p class="text-slate-400 text-[10px] font-bold uppercase">Jalur Masuk</p><p class="font-black text-xs text-primary-600">${item.jalur}</p></div>
                             </div>
@@ -2011,12 +2064,13 @@
                 doc.text("Nama Lengkap", 20, 75); doc.text(": " + item.nama, 65, 75);
                 doc.text("Jalur Masuk", 20, 85); doc.text(": " + item.jalur, 65, 85);
                 doc.text("Kelurahan", 20, 95); doc.text(": " + item.kelurahan, 65, 95);
-                doc.text("Waktu Pendaftaran", 20, 105); doc.text(": " + new Date(item.waktu).toLocaleString('id-ID'), 65, 105);
-                doc.text("Status Saat Ini", 20, 115); doc.text(": " + item.status.toUpperCase(), 65, 115);
+                doc.text("Riwayat TK", 20, 105); doc.text(": " + (item.lulusan_tk === 'Ya' ? item.nama_tk : 'Tidak / Bukan Lulusan TK'), 65, 105);
+                doc.text("Waktu Pendaftaran", 20, 115); doc.text(": " + new Date(item.waktu).toLocaleString('id-ID'), 65, 115);
+                doc.text("Status Saat Ini", 20, 125); doc.text(": " + item.status.toUpperCase(), 65, 125);
                 
                 doc.setFontSize(9);
                 doc.setFont("helvetica", "italic");
-                doc.text("* Bukti cetak ini resmi dikeluarkan dari sistem SPMB UPTD SDN 24 Batangase.", 20, 140);
+                doc.text("* Bukti cetak ini resmi dikeluarkan dari sistem SPMB UPTD SDN 24 Batangase.", 20, 150);
                 
                 doc.save(`Formulir_${item.id}.pdf`);
             },
